@@ -442,7 +442,7 @@ function initCarousel() {
     
     let currentIndex = 0;
     const totalSlides = slides.length;
-    const slideInterval = 2000; // 2 seconds
+    const slideInterval = 3000; // 2 seconds
     
     function updateSlides() {
         slides.forEach((slide, index) => {
