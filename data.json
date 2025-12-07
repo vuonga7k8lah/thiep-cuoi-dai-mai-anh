@@ -1,0 +1,41 @@
+{
+    "chu_re": {
+        "ten_nha": "Nhà Trai",
+        "ho_ten_chu_re": "Lê Quang Đại",
+        "ho_ten_co_dau": "Nguyễn Mai Anh",
+        "hon_le": {
+            "dia_diem": "Tư gia nhà trai",
+            "dia_chi": "Xóm dưới 1, Xã Vạn Phú, Tỉnh Thái Nguyên",
+            "link_chi_duong": "https://maps.app.goo.gl/M2voJMJ6J1jH7qKA9",
+            "ngay_cuoi": "28/12/2025",
+            "gio_cuoi": "16:00"
+        },
+        "ngan_hang": {
+            "bank_id": "VPB",
+            "bank_name": "VPBank",
+            "account_no": "99015012001",
+            "account_name": "LE QUANG DAI",
+            "description": "Chuc mung hanh phuc"
+        }
+    },
+    "co_dau": {
+        "ten_nha": "Nhà Gái",
+        "ho_ten_chu_re": "Lê Quang Đại",
+        "ho_ten_co_dau": "Nguyễn Mai Anh",
+        "hon_le": {
+            "dia_diem": "Tư gia nhà gái",
+            "dia_chi": "Số 123, Đường ABC, Phường XYZ, Quận ABC, TP. XYZ",
+            "link_chi_duong": "https://maps.google.com/?q=...",
+            "ngay_cuoi": "29/12/2025",
+            "gio_cuoi": "10:00"
+        },
+        "ngan_hang": {
+            "bank_id": "MB",
+            "bank_name": "MBBank",
+            "account_no": "0123456789",
+            "account_name": "NGUYEN THI MAI ANH",
+            "description": "Chuc mung hanh phuc"
+        }
+    },
+    "mac_dinh": "chu_re"
+}

@@ -144,15 +144,46 @@
 
     <!-- PhotoSwipe CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css">
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- AOS - Animate On Scroll Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 </head>
 
 <body>
+    <!-- Floating Right Toolbar -->
+    <div id="floating-toolbar" class="floating-toolbar">
+        <div class="toolbar-item" id="btn-directions" title="Chỉ đường">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+        </div>
+        <div class="toolbar-item" id="btn-gift" title="Gửi quà">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                <rect x="2" y="7" width="20" height="5"></rect>
+                <line x1="12" y1="22" x2="12" y2="7"></line>
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+            </svg>
+        </div>
+    </div>
+
     <div id="root-page-container"
         style="background-color:#fff;background-image:none;background-size:cover;width:100%;max-width:500px;height:auto;min-height:9510px;position:relative; margin: 0 auto;"
         class="jsx-2177353859">
         <div
             style="position:relative;user-select:auto;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;max-width:500px;height:auto;min-height:9510px;min-width:50px;">
             <div id="audio-control-wrapper" class="jsx-3522513885 cursor-pointer">
+                <audio id="bg-music" loop preload="auto">
+                    <source src="music/mot_doi.mp3" type="audio/mpeg">
+                </audio>
                 <div class="jsx-3522513885 audio-toggle "><img alt="music icon" class="jsx-3522513885 music-icon"
                         src="https://cdn.cinelove.me/assets/audio-6.png"></div>
             </div>
@@ -204,7 +235,7 @@
                             <div style="background-image:url(&quot;https://cdn.cinelove.me/assets/plugins/wax-seal.webp&quot;)"
                                 class="jsx-155046617 wax-seal"></div>
                             <div class="jsx-155046617 letter"><img alt="Letter" class="jsx-155046617 letter-image"
-                                    src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/0db4b6fc-0492-4bbf-9d88-b0be2d712430.png?crop=134,0,1121,747&amp;resize=800x&amp;format=webp">
+                                    src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765081082/Screenshot_2025-12-07_at_11.17.53_odzz3g.png">
                             </div>
                             <div class="jsx-155046617 hearts">
                                 <div class="jsx-155046617 heart a1"></div>
@@ -290,8 +321,8 @@
                         </div>
                     </div>
                 </div>
-                <div data-node-id="hkBC0wNsbm"
-                    style="position: absolute; top: 1034.11px; left: -10.4px; width: 227px; height: auto; z-index: 1; cursor: move; transform: rotate(0deg);"
+                <div data-aos="fade-left" data-aos-delay="300" data-node-id="hkBC0wNsbm"
+                    style="position: absolute; top: 1034.11px; left: -10.4px; width: 227px; height: auto; z-index: 1; cursor: move;"
                     class="jsx-1828971989 text-box-component" tabindex="0">
                     <div data-transition-key="hkBC0wNsbm-rotate-in-1.6-0-ease-out-false" data-node-id="hkBC0wNsbm"
                         style="transition: 1.6s ease-out; transform: none; opacity: 1; width: 100%; height: 100%;">
@@ -303,7 +334,7 @@
                         </div>
                     </div>
                 </div>
-                <div data-node-id="sHSRmmnhDe"
+                <div data-node-id="sHSRmmnhDe" data-aos="fade-up-left" data-aos-delay="300"
                     style="position: absolute; top: 1034.06px; left: 273.3px; width: 227px; height: auto; z-index: 2; cursor: move; transform: rotate(0deg);"
                     class="jsx-1828971989 text-box-component">
                     <div data-transition-key="sHSRmmnhDe-rotate-in-1.6-0-cubic-bezier(0.68, -0.55, 0.265, 1.55)-false"
@@ -317,7 +348,7 @@
                         </div>
                     </div>
                 </div>
-                <div data-node-id="OvZuKQod5_"
+                <div data-node-id="OvZuKQod5_" data-aos="fade-left" data-aos-delay="400"
                     style="position: absolute; top: 1088.22px; left: 14.3px; width: 211px; height: auto; z-index: 2; cursor: move; transform: rotate(0deg);"
                     class="jsx-1828971989 text-box-component">
                     <div data-transition-key="OvZuKQod5_-scale-in-1.6-0-ease-out-false" data-node-id="OvZuKQod5_"
@@ -331,7 +362,7 @@
                         </div>
                     </div>
                 </div>
-                <div data-node-id="uaoSRch0Zt"
+                <div data-node-id="uaoSRch0Zt" data-aos="fade-right" data-aos-delay="500"
                     style="position: absolute; top: 1085.39px; left: 273.3px; width: 227px; height: auto; z-index: 3; cursor: move; transform: rotate(0deg);"
                     class="jsx-1828971989 text-box-component">
                     <div data-transition-key="uaoSRch0Zt-scale-in-1.6-0-ease-out-false" data-node-id="uaoSRch0Zt"
@@ -916,7 +947,7 @@
                     </div>
                 </div>
             </div>
-            <div data-node-id="GAarz1mzC6"
+            <div data-node-id="GAarz1mzC6" data-aos="fade-up-left" data-aos-delay="300"
                 style="position: absolute; top: 3070.5px; left: 295.95px; width: 181.7px; height: auto; z-index: 20; cursor: move; transform: rotate(0deg);"
                 class="jsx-1828971989 text-box-component">
                 <div data-transition-key="GAarz1mzC6-rotate-in-1.6-0-ease-out-false" data-node-id="GAarz1mzC6"
@@ -945,7 +976,7 @@
                     </div>
                 </div>
             </div>
-            <div data-node-id="Mv1w2ApCo_"
+            <div data-node-id="Mv1w2ApCo_" data-aos="fade-down-right" data-aos-delay="300"
                 style="position: absolute; top: 3380.5px; left: 28.9px; width: 181.7px; height: auto; z-index: 21; cursor: move; transform: rotate(0deg);"
                 class="jsx-1828971989 text-box-component">
                 <div data-transition-key="Mv1w2ApCo_-rotate-in-1.6-0-ease-out-false" data-node-id="Mv1w2ApCo_"
@@ -1031,7 +1062,7 @@
                     </div>
                 </div>
             </div>
-            <div data-node-id="in3mT6yPnO"
+            <div data-node-id="in3mT6yPnO" data-aos="fade-up-right" data-aos-delay="200"
                 style="position: absolute; top: 3782.55px; left: 27.158px; width: 450.5px; height: auto; z-index: 35; cursor: move; transform: rotate(0deg);"
                 class="jsx-1828971989 text-box-component">
                 <div data-transition-key="in3mT6yPnO-slide-up-1.6-0-ease-out-false" data-node-id="in3mT6yPnO"
@@ -1459,22 +1490,22 @@
                     style="transition: 1.6s ease-out; transform: none; opacity: 1; width: 100%; height: 100%;">
                     <div
                         style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border: 0px solid; padding: 0px; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; opacity: 1; background-color: transparent; border-radius: 0px; box-shadow: none;">
-                        <div class="jsx-3272123691 countdown componentBOX "
+                        <div class="jsx-3272123691 countdown componentBOX" id="wedding-countdown"
                             style="color: rgb(255, 255, 255); background-color: rgb(70, 92, 61); width: 100%; height: 100%; font-size: 14px; font-family: Arial; --spacing: 20px;">
                             <div class="jsx-3272123691" style="background-color: rgb(70, 92, 61);">
-                                <div class="jsx-3272123691">389</div>
+                                <div class="jsx-3272123691" id="countdown-days">21</div>
                                 <div class="jsx-3272123691">ngày</div>
                             </div>
                             <div class="jsx-3272123691" style="background-color: rgb(70, 92, 61);">
-                                <div class="jsx-3272123691">11</div>
+                                <div class="jsx-3272123691" id="countdown-hours">00</div>
                                 <div class="jsx-3272123691">giờ</div>
                             </div>
                             <div class="jsx-3272123691" style="background-color: rgb(70, 92, 61);">
-                                <div class="jsx-3272123691">37</div>
+                                <div class="jsx-3272123691" id="countdown-minutes">00</div>
                                 <div class="jsx-3272123691">phút</div>
                             </div>
                             <div class="jsx-3272123691" style="background-color: rgb(70, 92, 61);">
-                                <div class="jsx-3272123691">49</div>
+                                <div class="jsx-3272123691" id="countdown-seconds">00</div>
                                 <div class="jsx-3272123691">giây</div>
                             </div>
                         </div>
@@ -1705,7 +1736,7 @@
               8px 
               8px;box-shadow:none">
                         <div class="photo-gallery-wrapper"
-                            style="width: 100%; height: 100%; pointer-events: none; display: flex; flex-direction: column;">
+                            style="width: 100%; height: 100%; pointer-events: auto; display: flex; flex-direction: column;">
                             <div class="image-gallery photo-gallery-custom image-gallery-using-mouse"
                                 aria-live="polite">
                                 <div class="image-gallery-content  image-gallery-thumbnails-bottom">
@@ -1713,29 +1744,31 @@
                                         <div class="image-gallery-swipe">
                                             <div class="image-gallery-slides">
                                                 <div aria-label="Go to Slide 1" tabindex="-1"
-                                                    class="image-gallery-slide  image-gallery-left "
+                                                    class="image-gallery-slide image-gallery-left"
                                                     style="display: inherit; transform: translate3d(-100%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
                                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
-                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3215-min_xhjlhs.jpg"
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003572/IMG_3240-min_hpiujy.jpg"
                                                             alt="Photo 1"
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
+
                                                 <div aria-label="Go to Slide 2" tabindex="-1"
-                                                    class="image-gallery-slide  image-gallery-center "
+                                                    class="image-gallery-slide image-gallery-center"
                                                     style="display: inherit; transform: translate3d(0%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
                                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
-                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003567/IMG_3228-min_uhxrhw.jpg"
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003571/IMG_3238-min_rggar6.jpg"
                                                             alt="Photo 2"
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
+
                                                 <div aria-label="Go to Slide 3" tabindex="-1"
-                                                    class="image-gallery-slide  image-gallery-right "
+                                                    class="image-gallery-slide image-gallery-right"
                                                     style="display: inherit; transform: translate3d(100%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
@@ -1745,103 +1778,202 @@
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
+
                                                 <div aria-label="Go to Slide 4" tabindex="-1"
-                                                    class="image-gallery-slide  "
+                                                    class="image-gallery-slide"
                                                     style="display: inherit; transform: translate3d(200%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
                                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
-                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3210-min_yyfu5w.jpg"
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003569/IMG_3234-min_yyieln.jpg"
                                                             alt="Photo 4"
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
+
                                                 <div aria-label="Go to Slide 5" tabindex="-1"
-                                                    class="image-gallery-slide  "
+                                                    class="image-gallery-slide"
                                                     style="display: inherit; transform: translate3d(300%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
                                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
-                                                        <img src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/94e7f1f3-5c91-4834-b21a-4cbb8c53ab9a.jpg"
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003569/IMG_3232-min_edcknz.jpg"
                                                             alt="Photo 5"
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
+
                                                 <div aria-label="Go to Slide 6" tabindex="-1"
-                                                    class="image-gallery-slide  "
+                                                    class="image-gallery-slide"
                                                     style="display: inherit; transform: translate3d(400%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
                                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
-                                                        <img src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/f3535e6f-3a2c-467f-a6a2-b2291f3561f0.png"
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003569/IMG_3232-min_edcknz.jpg"
                                                             alt="Photo 6"
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
+
                                                 <div aria-label="Go to Slide 7" tabindex="-1"
-                                                    class="image-gallery-slide  "
+                                                    class="image-gallery-slide"
                                                     style="display: inherit; transform: translate3d(500%, 0px, 0px); transition: 450ms ease-out;"
                                                     role="button">
                                                     <div
                                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
-                                                        <img src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/ae7ed019-43d5-4e65-bfd9-7c443137019d.png"
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003567/IMG_3228-min_uhxrhw.jpg"
                                                             alt="Photo 7"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 8" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(600%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003566/IMG_3230-min_vkiuoz.jpg"
+                                                            alt="Photo 8"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 9" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(700%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003566/IMG_3226-min_pimeo2.jpg"
+                                                            alt="Photo 9"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 10" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(800%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003566/IMG_3220-min_z6li2c.jpg"
+                                                            alt="Photo 10"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 11" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(900%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003566/IMG_3224-min_rmyzz3.jpg"
+                                                            alt="Photo 11"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 12" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1000%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3217-min_nhj243.jpg"
+                                                            alt="Photo 12"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 13" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1100%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3210-min_yyfu5w.jpg"
+                                                            alt="Photo 13"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 14" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1200%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3215-min_xhjlhs.jpg"
+                                                            alt="Photo 14"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 15" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1300%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3208-min_oazq2n.jpg"
+                                                            alt="Photo 15"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 16" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1400%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003564/IMG_3197-min_h6pohl.jpg"
+                                                            alt="Photo 16"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 17" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1500%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003564/IMG_3197-min_h6pohl.jpg"
+                                                            alt="Photo 17"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 18" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1600%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003564/IMG_3040-min_gvaow9.jpg"
+                                                            alt="Photo 18"
+                                                            style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
+                                                    </div>
+                                                </div>
+
+                                                <div aria-label="Go to Slide 19" tabindex="-1"
+                                                    class="image-gallery-slide"
+                                                    style="display: inherit; transform: translate3d(1700%, 0px, 0px); transition: 450ms ease-out;"
+                                                    role="button">
+                                                    <div
+                                                        style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background-color:transparent">
+                                                        <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003564/IMG_3186-min_rmy5te.jpg"
+                                                            alt="Photo 19"
                                                             style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        class="image-gallery-thumbnails-wrapper  image-gallery-thumbnails-bottom thumbnails-swipe-horizontal">
-                                        <div class="image-gallery-thumbnails">
-                                            <nav class="image-gallery-thumbnails-container"
-                                                style="transform: translate3d(-39.5833px, 0px, 0px); transition: 450ms ease-out;"
-                                                aria-label="Thumbnail Navigation"><button type="button" tabindex="0"
-                                                    aria-pressed="false" aria-label="Go to Slide 1"
-                                                    class="image-gallery-thumbnail"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/21bd404c-9bcc-4a6a-8b14-6786444630fc.png"
-                                                            alt="Photo 1"></span></button><button type="button"
-                                                    tabindex="0" aria-pressed="true" aria-label="Go to Slide 2"
-                                                    class="image-gallery-thumbnail active"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/a164abb2-c513-402a-8945-5125344ff930.png"
-                                                            alt="Photo 2"></span></button><button type="button"
-                                                    tabindex="0" aria-pressed="false" aria-label="Go to Slide 3"
-                                                    class="image-gallery-thumbnail"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/faf45cd0-ccd5-4768-ab9d-060a3eb689f9.png"
-                                                            alt="Photo 3"></span></button><button type="button"
-                                                    tabindex="0" aria-pressed="false" aria-label="Go to Slide 4"
-                                                    class="image-gallery-thumbnail"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/6a4d3593-5854-4c9d-96e3-ea512cdb76cd.png"
-                                                            alt="Photo 4"></span></button><button type="button"
-                                                    tabindex="0" aria-pressed="false" aria-label="Go to Slide 5"
-                                                    class="image-gallery-thumbnail"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/94e7f1f3-5c91-4834-b21a-4cbb8c53ab9a.jpg"
-                                                            alt="Photo 5"></span></button><button type="button"
-                                                    tabindex="0" aria-pressed="false" aria-label="Go to Slide 6"
-                                                    class="image-gallery-thumbnail"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/f3535e6f-3a2c-467f-a6a2-b2291f3561f0.png"
-                                                            alt="Photo 6"></span></button><button type="button"
-                                                    tabindex="0" aria-pressed="false" aria-label="Go to Slide 7"
-                                                    class="image-gallery-thumbnail"><span
-                                                        class="image-gallery-thumbnail-inner"><img
-                                                            class="image-gallery-thumbnail-image"
-                                                            src="https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/ae7ed019-43d5-4e65-bfd9-7c443137019d.png"
-                                                            alt="Photo 7"></span></button></nav>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -1922,8 +2054,8 @@
                                                     class="ant-radio ant-wave-target"><input class="ant-radio-input"
                                                         type="radio" name="rsvp-attendance" value="no"><span
                                                         class="ant-radio-inner"></span></span><span
-                                                    class="ant-radio-label">Tôi bận, rất tiếc không thể tham
-                                                    dự</span></label></div>
+                                                    class="ant-radio-label">Rất tiếc không thể tham dự</span></label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div><label for="rsvp-attendee-count"
@@ -1933,8 +2065,8 @@
                                         style="width:100%;font-size:15px">
                                         <div class="ant-select-content">
                                             <div class="ant-select-content-value" style="visibility:visible"
-                                                title="1 người">1 người</div><input id="«R4sunkt5am6»" type="search"
-                                                readonly="" autocomplete="off" class="ant-select-input" role="combobox"
+                                                title="1 người">1 người</div><input type="input" readonly=""
+                                                autocomplete="off" class="ant-select-input" role="combobox"
                                                 aria-expanded="false" aria-haspopup="listbox"
                                                 aria-owns="«R4sunkt5am6»_list" aria-autocomplete="list"
                                                 aria-controls="«R4sunkt5am6»_list" value="">
@@ -2016,7 +2148,7 @@
               0px" class="jsx-1944329802">
                         <div style="-webkit-mask-box-image-source:none;-webkit-mask-box-image-slice:0 fill;mask-image:none;mask-size:100% 100%;mask-repeat:no-repeat"
                             class="jsx-1944329802 photo-component">
-                            <div style="background-image:url(https://cdn.cinelove.me/templates/assets/77a0f81e-67af-4f30-91b6-73c5e5ce6aea/6a4d3593-5854-4c9d-96e3-ea512cdb76cd.png);border-radius:0px 
+                            <div style="background-image:url(https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3215-min_xhjlhs.jpg);border-radius:0px 
                   0px 
                   0px 
                   0px" class="jsx-1944329802 photo-bg-wrap"></div>
