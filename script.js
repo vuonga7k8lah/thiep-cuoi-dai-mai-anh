@@ -18,6 +18,18 @@ function initPhotoSwipe() {
     const galleryImages = [];
     const CLOUDINARY_PREFIX = 'https://res.cloudinary.com';
     
+    // Helper function to get high-res Cloudinary URL
+    function getHighResUrl(originalUrl) {
+        // If it's a Cloudinary URL, try to get the highest quality version
+        if (originalUrl.includes('cloudinary.com')) {
+            // Remove any existing transformations and request original quality
+            // Cloudinary URL pattern: .../upload/v12345/image.jpg
+            // We can add transformation like q_auto:best,f_auto for best quality
+            return originalUrl.replace('/upload/', '/upload/q_auto:best,f_auto/');
+        }
+        return originalUrl;
+    }
+    
     // Find the Album of Love gallery
     const albumGalleryDiv = document.querySelector('.photo-gallery-wrapper');
     if (albumGalleryDiv) {
@@ -27,9 +39,10 @@ function initPhotoSwipe() {
             // Only add Cloudinary images to PhotoSwipe gallery
             if (img.src && img.src.startsWith(CLOUDINARY_PREFIX)) {
                 galleryImages.push({
-                    src: img.src,
-                    width: 1200,
-                    height: 900,
+                    src: getHighResUrl(img.src),
+                    // Use larger default dimensions for high-res display
+                    width: 4000,
+                    height: 3000,
                     alt: img.alt || 'Photo'
                 });
             }
@@ -50,9 +63,10 @@ function initPhotoSwipe() {
             // Only add Cloudinary images to PhotoSwipe gallery
             if (imageUrl && imageUrl.startsWith(CLOUDINARY_PREFIX)) {
                 galleryImages.push({
-                    src: imageUrl,
-                    width: 1200,
-                    height: 900,
+                    src: getHighResUrl(imageUrl),
+                    // Use larger default dimensions for high-res display
+                    width: 4000,
+                    height: 3000,
                     alt: 'Photo'
                 });
             }
@@ -93,7 +107,7 @@ function initPhotoSwipe() {
             children: 'a',
             pswpModule: PhotoSwipe,
             showHideAnimationType: 'fade',
-            bgOpacity: 0.9,
+            bgOpacity: 0.95,
             spacing: 0.1,
             allowPanToNext: true,
             zoom: true,
@@ -101,9 +115,23 @@ function initPhotoSwipe() {
             counter: true,
             arrowKeys: true,
             pinchToClose: true,
-            clickToCloseNonZoomable: true,
+            clickToCloseNonZoomable: false,
             imageClickAction: 'zoom',
-            tapAction: 'toggle-controls'
+            tapAction: 'toggle-controls',
+            // Enable max zoom for sharp viewing
+            maxZoomLevel: 4,
+            // Preload adjacent slides for smoother navigation
+            preload: [1, 2]
+        });
+        
+        // Load actual image dimensions dynamically for better quality
+        lightbox.on('itemData', (e) => {
+            const img = new Image();
+            img.src = e.itemData.src;
+            img.onload = function() {
+                e.itemData.width = this.naturalWidth || 4000;
+                e.itemData.height = this.naturalHeight || 3000;
+            };
         });
         
         lightbox.init();

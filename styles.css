@@ -8850,3 +8850,138 @@
             content: "|ant-design-icons|anticon:eugadl;|Shared|ant:1l0drjh;|Spin-Spin|ant-spin|anticon:1bq9ok6;|Tooltip-Tooltip|ant-tooltip|anticon:1xyx9js;|Button-Button|ant-btn|anticon:1f4ddw3;|Dropdown-Dropdown|ant-dropdown|anticon:1acwstm;|Badge-Badge|ant-badge|anticon:l93y7i;|Wave-Wave|ant-wave|anticon:13y5j5m;|Modal-Modal|ant-modal|anticon:eowfko;|Drawer-Drawer|ant-drawer|anticon:e64pm6;|Tabs-Tabs|ant-tabs|anticon:1ilhklp;|Radio-Radio|ant-radio|anticon:lib6kc;|Select-Select|ant-select|anticon:89iybn;|Layout-Sider|ant-layout-sider|anticon:1eq9ng9;|Space-Space|ant-space|anticon:kmrsh;|Typography-Typography|ant-typography|anticon:13332kb;|Switch-Switch|ant-switch|anticon:1raqf41";
         }
     
+
+/* ========================================
+   MOBILE RESPONSIVE CSS - COMPLETE REWRITE
+   ======================================== */
+
+/* Wrapper to control overflow and scaling */
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+}
+
+/* Base container styles */
+#root-page-container {
+    margin: 0 auto !important;
+    overflow: visible !important;
+}
+
+/* Mobile responsive - scale content to fit viewport width */
+@media screen and (max-width: 500px) {
+    /* Create scaling wrapper effect */
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    
+    #root-page-container {
+        /* Scale factor: viewport width / design width (500px) */
+        --scale-factor: calc(100vw / 500px);
+        transform: scale(var(--scale-factor));
+        transform-origin: top left;
+        /* Set explicit width to maintain layout */
+        width: 500px !important;
+        max-width: none !important;
+        /* Adjust margin to compensate for transform */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        /* Set margin-bottom to create proper scroll height */
+        margin-bottom: calc(-9510px + (9510px * (100vw / 500px))) !important;
+    }
+    
+    /* Audio control - larger for touch on mobile */
+    #audio-control-wrapper.jsx-3522513885 {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+/* Very small screens (iPhone SE, older devices) */
+@media screen and (max-width: 375px) {
+    #root-page-container {
+        --scale-factor: calc(100vw / 500px);
+        transform: scale(var(--scale-factor));
+        transform-origin: top left;
+        width: 500px !important;
+    }
+}
+
+/* Tablet size - center the content */
+@media screen and (min-width: 501px) and (max-width: 768px) {
+    #root-page-container {
+        margin: 0 auto !important;
+    }
+}
+
+/* Desktop - centered container */
+@media screen and (min-width: 501px) {
+    #root-page-container {
+        max-width: 500px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* PhotoSwipe mobile adjustments */
+@media screen and (max-width: 500px) {
+    .pswp__button {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .pswp__counter {
+        font-size: 14px !important;
+    }
+    
+    .pswp {
+        /* Ensure PhotoSwipe is above scaled content */
+        z-index: 10000 !important;
+    }
+}
+
+/* Gallery touch improvements */
+.image-gallery-slide img {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.image-gallery-thumbnail {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input, select, textarea {
+    font-size: 16px !important;
+}
+
+/* Better touch feedback */
+a, button, [role="button"], .cursor-pointer {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Landscape mode - use height-based scaling */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+    #root-page-container {
+        --scale-factor: min(calc(100vw / 500px), calc(100vh / 300px));
+        transform: scale(var(--scale-factor));
+        transform-origin: top center;
+        margin: 0 auto !important;
+    }
+}
+
+/* Fix for elements that should span full width */
+.w-full {
+    width: 100% !important;
+}
+
+.h-full {
+    height: 100% !important;
+}
