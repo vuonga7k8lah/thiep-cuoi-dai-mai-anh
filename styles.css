@@ -8904,12 +8904,14 @@ html, body {
         /* Scale factor: viewport width / design width (500px) */
         --scale-factor: calc(100vw / 500px);
         transform: scale(var(--scale-factor));
-        transform-origin: top left;
+        transform-origin: top center;
         /* Set explicit width to maintain layout */
         width: 500px !important;
         max-width: none !important;
-        /* Adjust margin to compensate for transform */
-        margin-left: 0 !important;
+        /* Center the scaled container */
+        position: relative !important;
+        left: 50% !important;
+        margin-left: -250px !important; /* Half of 500px */
         margin-right: 0 !important;
         /* Set margin-bottom to create proper scroll height */
         margin-bottom: calc(-9510px + (9510px * (100vw / 500px))) !important;
