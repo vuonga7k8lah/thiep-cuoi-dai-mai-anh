@@ -8870,13 +8870,33 @@ html, body {
 }
 
 /* Mobile responsive - scale content to fit viewport width */
-@media screen and (max-width: 500px) {
+/* Extended to 768px to cover Facebook in-app browser and tablets */
+@media screen and (max-width: 768px) {
     /* Create scaling wrapper effect */
     body {
         overflow-x: hidden;
         overflow-y: auto;
     }
     
+    #root-page-container {
+        /* Scale factor: viewport width / design width (500px) */
+        /* Only scale down if viewport is smaller than 500px */
+        /* For viewports between 500px-768px, center without scaling */
+        width: 500px !important;
+        max-width: none !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    /* Audio control - larger for touch on mobile */
+    #audio-control-wrapper.jsx-3522513885 {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+/* Scale down for screens smaller than design width */
+@media screen and (max-width: 500px) {
     #root-page-container {
         /* Scale factor: viewport width / design width (500px) */
         --scale-factor: calc(100vw / 500px);
@@ -8891,12 +8911,6 @@ html, body {
         /* Set margin-bottom to create proper scroll height */
         margin-bottom: calc(-9510px + (9510px * (100vw / 500px))) !important;
     }
-    
-    /* Audio control - larger for touch on mobile */
-    #audio-control-wrapper.jsx-3522513885 {
-        width: 40px !important;
-        height: 40px !important;
-    }
 }
 
 /* Very small screens (iPhone SE, older devices) */
@@ -8909,15 +8923,8 @@ html, body {
     }
 }
 
-/* Tablet size - center the content */
-@media screen and (min-width: 501px) and (max-width: 768px) {
-    #root-page-container {
-        margin: 0 auto !important;
-    }
-}
-
 /* Desktop - centered container */
-@media screen and (min-width: 501px) {
+@media screen and (min-width: 769px) {
     #root-page-container {
         max-width: 500px !important;
         margin: 0 auto !important;
