@@ -151,19 +151,22 @@
     <!-- AOS - Animate On Scroll Library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- Canvas Confetti - Firework Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
     <!-- Floating Right Toolbar -->
     <div id="floating-toolbar" class="floating-toolbar">
-        <div class="toolbar-item" id="btn-directions" title="Chỉ đường">
+        <div class="toolbar-item" id="btn-directions" data-tooltip="Chỉ đường">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
             </svg>
         </div>
-        <div class="toolbar-item" id="btn-gift" title="Gửi quà">
+        <div class="toolbar-item" id="btn-gift" data-tooltip="Mừng Cưới 💝">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 12 20 22 4 22 4 12"></polyline>
@@ -761,7 +764,7 @@
                         <div class="jsx-1944329802 photo-component"
                             style="-webkit-mask-box-image-source: none; -webkit-mask-box-image-slice: 0 fill; mask-image: none; mask-size: 100% 100%; mask-repeat: no-repeat;">
                             <div class="jsx-1944329802 photo-bg-wrap"
-                                style="background-image: url(&quot;https://res.cloudinary.com/dhdi492ie/image/upload/v1765003564/IMG_3200-min_e6meon.jpg&quot;); border-radius: 0px;">
+                                style="background-image: url(&quot;https://res.cloudinary.com/dhdi492ie/image/upload/v1765115244/IMG_3436_xyborh.jpg&quot;); border-radius: 0px;">
                             </div>
                         </div>
                     </div>
@@ -1267,7 +1270,7 @@
                         style="position: relative; width: 100%; height: 100%; padding: 0px; border-radius: 0px; box-shadow: none; background-color: transparent; display: flex; align-items: center; justify-content: center; box-sizing: border-box; opacity: 1; border: 0px solid;">
                         <div disabled="" contenteditable="false"
                             style="height: auto; width: 100%; min-width: 20px; color: rgb(75, 83, 32); font-size: 20px; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; font-weight: 500; font-family: Arial; text-align: center; line-height: 1.7; letter-spacing: 0px; text-transform: none; text-decoration: none; font-style: normal; pointer-events: none; overflow: hidden; word-break: break-word;">
-                            09:30<div bis_skin_checked="1">
+                            09:00<div bis_skin_checked="1">
                                 <div bis_skin_checked="1">Checkin</div>
                             </div>
                         </div>
@@ -1284,22 +1287,7 @@
                         <div disabled="" contenteditable="false"
                             style="height: auto; width: 100%; min-width: 20px; color: rgb(75, 83, 32); font-size: 20px; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; font-weight: 500; font-family: Arial; text-align: center; line-height: 1.7; letter-spacing: 0px; text-transform: none; text-decoration: none; font-style: normal; pointer-events: none; overflow: hidden; word-break: break-word;">
                             11:00&nbsp;<br>
-                            <div bis_skin_checked="1">Khai Tiệc</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div data-node-id="3SDNwvXAti"
-                style="position: absolute; top: 5016.62px; left: 213px; width: 94.3px; height: 128.662px; z-index: 41; cursor: move; transform: rotate(0deg) scale(1, 1);"
-                class="jsx-3557960200">
-                <div data-transition-key="3SDNwvXAti-fade-in-1.6-0-ease-out-false" data-node-id="3SDNwvXAti"
-                    style="transition: 1.6s ease-out; transform: none; opacity: 1; width: 100%; height: 100%;">
-                    <div class="jsx-3557960200"
-                        style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; background-color: transparent; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; opacity: 1;">
-                        <div class="jsx-3557960200 material-component">
-                            <div class="jsx-3557960200 photo-bg-wrap"
-                                style="background-image: url(&quot;https://cdn-resource.cinelove.me/resources/flowchartIcons/7ojrsz5b157xyl3xo134g.png&quot;); border: 0px solid; border-radius: 0px; padding: 0px; box-shadow: none;">
-                            </div>
+                            <div bis_skin_checked="1">Lễ Thành Hôn</div>
                         </div>
                     </div>
                 </div>
@@ -1314,11 +1302,12 @@
                         <div disabled="" contenteditable="false"
                             style="height: auto; width: 100%; min-width: 20px; color: rgb(75, 83, 32); font-size: 20px; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; font-weight: 500; font-family: Arial; text-align: center; line-height: 1.7; letter-spacing: 0px; text-transform: none; text-decoration: none; font-style: normal; pointer-events: none; overflow: hidden; word-break: break-word;">
                             12:00&nbsp;<br>
-                            <div>Lễ Thành Hôn</div>
+                            <div>Khai Tiệc</div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div data-node-id="7CkZ4mfPwL"
                 style="position: absolute; top: 5048.94px; left: 36.8013px; width: 107px; height: 87.256px; z-index: 43; cursor: move; transform: rotate(0deg) scale(1, 1);"
                 class="jsx-3557960200">
@@ -1334,10 +1323,26 @@
                     </div>
                 </div>
             </div>
+
             <div data-node-id="5IfVC8bPD5"
                 style="position: absolute; top: 5012.73px; left: 344.95px; width: 121.5px; height: 126px; z-index: 44; cursor: move; transform: rotate(0deg) scale(1, 1);"
                 class="jsx-3557960200">
                 <div data-transition-key="5IfVC8bPD5-fade-in-1.6-0-ease-out-false" data-node-id="5IfVC8bPD5"
+                    style="transition: 1.6s ease-out; transform: none; opacity: 1; width: 100%; height: 100%;">
+                    <div class="jsx-3557960200"
+                        style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; background-color: transparent; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; opacity: 1;">
+                        <div class="jsx-3557960200 material-component">
+                            <div class="jsx-3557960200 photo-bg-wrap"
+                                style="background-image: url(&quot;https://cdn-resource.cinelove.me/resources/flowchartIcons/7ojrsz5b157xyl3xo134g.png&quot;); border: 0px solid; border-radius: 0px; padding: 0px; box-shadow: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-node-id="3SDNwvXAti"
+                style="position: absolute; top: 5016.62px; left: 213px; width: 94.3px; height: 128.662px; z-index: 41; cursor: move; transform: rotate(0deg) scale(1, 1);"
+                class="jsx-3557960200">
+                <div data-transition-key="3SDNwvXAti-fade-in-1.6-0-ease-out-false" data-node-id="3SDNwvXAti"
                     style="transition: 1.6s ease-out; transform: none; opacity: 1; width: 100%; height: 100%;">
                     <div class="jsx-3557960200"
                         style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; background-color: transparent; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; opacity: 1;">

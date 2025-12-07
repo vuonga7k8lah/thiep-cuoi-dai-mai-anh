@@ -7,6 +7,50 @@ gtag('js', new Date());
 gtag('config', 'G-24WP7GNL8X');
 
 // ==========================================
+// SECURITY - Prevent viewing source code
+// ==========================================
+(function() {
+    // Disable right-click
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable keyboard shortcuts (F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C)
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.keyCode === 85) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+S (Save)
+        if (e.ctrlKey && e.keyCode === 83) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // Console warning
+    console.log('%c⚠️ CẢNH BÁO!', 'color: red; font-size: 40px; font-weight: bold;');
+    console.log('%cĐây là tính năng dành cho developers. Nếu ai đó yêu cầu bạn paste mã vào đây, đó có thể là lừa đảo!', 'color: red; font-size: 16px;');
+    
+    // Clear console periodically
+    setInterval(function() {
+        console.clear();
+    }, 1000);
+})();
+
+// ==========================================
 // DYNAMIC DATA LOADING - Based on URL parameter
 // ==========================================
 let weddingData = null;
@@ -442,7 +486,7 @@ function initCarousel() {
     
     let currentIndex = 0;
     const totalSlides = slides.length;
-    const slideInterval = 3000; // 2 seconds
+    const slideInterval = 5000; // 2 seconds
     
     function updateSlides() {
         slides.forEach((slide, index) => {
@@ -812,6 +856,65 @@ window.addEventListener('load', function() {
 });
 
 // ==========================================
+// FIREWORK EFFECT - Canvas Confetti
+// ==========================================
+function triggerFireworks() {
+    if (typeof confetti === 'undefined') {
+        console.log('Confetti library not loaded');
+        return;
+    }
+    
+    // Create multiple bursts for firework effect
+    const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3'];
+    
+    // Center burst
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0.5, y: 0.6 },
+        colors: colors,
+        startVelocity: 45,
+        gravity: 1,
+        scalar: 1.2
+    });
+    
+    // Left burst
+    setTimeout(function() {
+        confetti({
+            particleCount: 50,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0, y: 0.6 },
+            colors: colors
+        });
+    }, 150);
+    
+    // Right burst
+    setTimeout(function() {
+        confetti({
+            particleCount: 50,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1, y: 0.6 },
+            colors: colors
+        });
+    }, 300);
+    
+    // Top burst
+    setTimeout(function() {
+        confetti({
+            particleCount: 80,
+            spread: 100,
+            origin: { x: 0.5, y: 0.3 },
+            colors: colors,
+            startVelocity: 30
+        });
+    }, 450);
+    
+    console.log('Fireworks triggered!');
+}
+
+// ==========================================
 // FLOATING TOOLBAR - Directions & Gift buttons
 // ==========================================
 let toolbarInitialized = false;
@@ -870,6 +973,9 @@ function initToolbar() {
         e.preventDefault();
         e.stopPropagation();
         
+        // Trigger firework effect
+        triggerFireworks();
+        
         const BANK_INFO = getCurrentBankInfo() || {
             BANK_ID: 'VPB',
             BANK_NAME: 'VPBank',
@@ -912,7 +1018,7 @@ function initToolbar() {
             }
         });
         
-        console.log('Gift QR popup shown');
+        console.log('Gift QR popup shown with fireworks!');
     });
     
     console.log('Toolbar initialized!');
