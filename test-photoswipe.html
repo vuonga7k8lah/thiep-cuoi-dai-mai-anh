@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoSwipe Test</title>
+    <!-- PhotoSwipe CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .gallery a {
+            display: block;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .status {
+            padding: 10px;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎉 PhotoSwipe Test Gallery</h1>
+
+    <div class="status">
+        <strong>Status:</strong> <span id="status">Loading...</span>
+    </div>
+
+    <div class="gallery" id="my-gallery">
+        <a href="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3215-min_xhjlhs.jpg"
+            data-pswp-width="1200" data-pswp-height="900">
+            <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3215-min_xhjlhs.jpg"
+                alt="Photo 1">
+        </a>
+        <a href="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003567/IMG_3228-min_uhxrhw.jpg"
+            data-pswp-width="1200" data-pswp-height="900">
+            <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003567/IMG_3228-min_uhxrhw.jpg"
+                alt="Photo 2">
+        </a>
+        <a href="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003569/IMG_3236-min_qfj9b2.jpg"
+            data-pswp-width="1200" data-pswp-height="900">
+            <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003569/IMG_3236-min_qfj9b2.jpg"
+                alt="Photo 3">
+        </a>
+        <a href="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3210-min_yyfu5w.jpg"
+            data-pswp-width="1200" data-pswp-height="900">
+            <img src="https://res.cloudinary.com/dhdi492ie/image/upload/v1765003565/IMG_3210-min_yyfu5w.jpg"
+                alt="Photo 4">
+        </a>
+    </div>
+
+    <!-- PhotoSwipe JS -->
+    <script type="module">
+        import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe-lightbox.esm.min.js';
+        import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.esm.min.js';
+
+        const statusEl = document.getElementById('status');
+
+        statusEl.textContent = 'PhotoSwipe modules loaded! Click any image to test.';
+        statusEl.style.color = 'green';
+
+        // Initialize PhotoSwipe
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#my-gallery',
+            children: 'a',
+            pswpModule: PhotoSwipe,
+            showHideAnimationType: 'fade',
+            bgOpacity: 0.9,
+            zoom: true,
+            counter: true,
+            arrowKeys: true
+        });
+
+        lightbox.init();
+
+        console.log('PhotoSwipe initialized successfully!');
+    </script>
+</body>
+
+</html>
