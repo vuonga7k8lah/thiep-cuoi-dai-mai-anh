@@ -45,9 +45,9 @@ gtag('config', 'G-24WP7GNL8X');
     console.log('%cĐây là tính năng dành cho developers. Nếu ai đó yêu cầu bạn paste mã vào đây, đó có thể là lừa đảo!', 'color: red; font-size: 16px;');
     
     // Clear console periodically
-    // setInterval(function() {
-    //     console.clear();
-    // }, 1000);
+    setInterval(function() {
+        console.clear();
+    }, 1000);
 })();
 
 // ==========================================
