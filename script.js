@@ -44,10 +44,10 @@ gtag('config', 'G-24WP7GNL8X');
     console.log('%c⚠️ CẢNH BÁO!', 'color: red; font-size: 40px; font-weight: bold;');
     console.log('%cĐây là tính năng dành cho developers. Nếu ai đó yêu cầu bạn paste mã vào đây, đó có thể là lừa đảo!', 'color: red; font-size: 16px;');
     
-    // Clear console periodically
-    // setInterval(function() {
-    //     console.clear();
-    // }, 1000);
+   // Clear console periodically
+    setInterval(function() {
+        console.clear();
+    }, 1000);
 })();
 
 // ==========================================
@@ -179,8 +179,8 @@ loadWeddingData();
 // 5. Gửi link cho khách: yoursite.com/?guest=1 (1 là ID trong Sheet)
 
 // ⚠️ THAY ĐỔI SHEET_ID NÀY BẰNG ID GOOGLE SHEET CỦA BẠN
-const GOOGLE_SHEET_ID = '135CDt4uSmH-HRrxicnsqSXuk3sW1N0eccLbynacM_mE';
-const GOOGLE_SHEET_NAME = 'Danh Sách Khách Đại'; // Tên sheet (mặc định là Sheet1)
+const GOOGLE_SHEET_ID = '1TM2IW82oSgv9g1v4cv8WLGLBRhSbMrZ2ab8sflhwllk';
+const GOOGLE_SHEET_NAME = 'Danh Sách Khách Mai Anh'; // Tên sheet (mặc định là Sheet1)
 
 let guestName = null;
 
@@ -547,8 +547,8 @@ window.addEventListener('load', function () {
 // COUNTDOWN TIMER - Wedding Date: 28/12/2025 16:00
 // ==========================================
 function initCountdown() {
-    // Wedding date: December 28, 2025 at 16:00 (4:00 PM)
-    const weddingDate = new Date('2025-12-28T16:00:00+07:00').getTime();
+    // Wedding date: December 28, 2025 at 23:00 (23:00 PM)
+    const weddingDate = new Date('2025-12-28T23:00:00+07:00').getTime();
     
     function updateCountdown() {
         const now = new Date().getTime();
@@ -1508,7 +1508,7 @@ function showRSVPPopup() {
 function initRSVPPopup() {
     setTimeout(function() {
         showRSVPPopup();
-    }, 10000); // 10 giây
+    }, 15000); // 10 giây
 }
 
 // Khởi tạo RSVP form khi DOM ready
