@@ -45,9 +45,9 @@ gtag('config', 'G-24WP7GNL8X');
     console.log('%cĐây là tính năng dành cho developers. Nếu ai đó yêu cầu bạn paste mã vào đây, đó có thể là lừa đảo!', 'color: red; font-size: 16px;');
     
     // Clear console periodically
-    setInterval(function() {
-        console.clear();
-    }, 1000);
+    // setInterval(function() {
+    //     console.clear();
+    // }, 1000);
 })();
 
 // ==========================================
@@ -167,6 +167,153 @@ function getCurrentVenueInfo() {
 
 // Initialize data loading
 loadWeddingData();
+
+// ==========================================
+// GOOGLE SHEETS GUEST NAME - Load guest name from Google Sheets
+// ==========================================
+// HƯỚNG DẪN SỬ DỤNG:
+// 1. Tạo Google Sheet với cột A = ID, cột B = Tên khách mời
+// 2. Chia sẻ Sheet ở chế độ "Anyone with the link can view"
+// 3. Lấy Sheet ID từ URL: https://docs.google.com/spreadsheets/d/[SHEET_ID]/edit
+// 4. Thay thế GOOGLE_SHEET_ID bên dưới bằng ID của bạn
+// 5. Gửi link cho khách: yoursite.com/?guest=1 (1 là ID trong Sheet)
+
+// ⚠️ THAY ĐỔI SHEET_ID NÀY BẰNG ID GOOGLE SHEET CỦA BẠN
+const GOOGLE_SHEET_ID = '135CDt4uSmH-HRrxicnsqSXuk3sW1N0eccLbynacM_mE';
+const GOOGLE_SHEET_NAME = 'Danh Sách Khách Đại'; // Tên sheet (mặc định là Sheet1)
+
+let guestName = null;
+
+// Đọc dữ liệu khách mời từ Google Sheets
+async function loadGuestFromGoogleSheets() {
+    try {
+        // Lấy guest ID từ URL parameter
+        const guestId = getUrlParam('guest');
+        
+        if (!guestId) {
+            console.log('No guest parameter in URL');
+            return null;
+        }
+        
+        console.log('Loading guest with ID:', guestId);
+        
+        // URL để lấy Google Sheets dưới dạng CSV
+        // Format: https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:json&sheet={SHEET_NAME}
+        const sheetsUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(GOOGLE_SHEET_NAME)}`;
+        
+        const response = await fetch(sheetsUrl);
+        const text = await response.text();
+        
+        // Parse Google Sheets JSON response (wrapped trong "google.visualization.Query.setResponse(...)")
+        const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?/);
+        if (!jsonString || !jsonString[1]) {
+            console.error('Could not parse Google Sheets response');
+            return null;
+        }
+        
+        const data = JSON.parse(jsonString[1]);
+        
+        if (!data.table || !data.table.rows) {
+            console.error('No data found in Google Sheets');
+            return null;
+        }
+        
+        // Tìm khách mời theo ID (cột A)
+        // Row format: { c: [{ v: "ID" }, { v: "Tên" }, ...] }
+        const rows = data.table.rows;
+        
+        console.log('Total rows in sheet:', rows.length);
+        
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row.c || !row.c[0] || row.c[0].v === null || row.c[0].v === undefined) continue;
+            
+            // Lấy ID từ cell và xử lý cả số lẫn chuỗi
+            const cellValue = row.c[0].v;
+            const rowId = String(cellValue).trim();
+            const searchId = String(guestId).trim();
+            
+            console.log(`Row ${i}: ID="${rowId}" comparing with "${searchId}"`);
+            
+            // So sánh flexible: cả string và number
+            if (rowId === searchId || cellValue == guestId) {
+                // Lấy tên từ cột B (index 1)
+                guestName = row.c[1] ? row.c[1].v : null;
+                console.log('Found guest:', guestName, 'at row', i);
+                
+                // Cập nhật giao diện
+                updateGuestNameDisplay(guestName);
+                return guestName;
+            }
+        }
+        
+        console.log('Guest ID not found in sheet. Searched for:', guestId);
+        return null;
+        
+    } catch (error) {
+        console.error('Error loading guest from Google Sheets:', error);
+        return null;
+    }
+}
+
+// Cập nhật hiển thị tên khách mời trên ảnh letter trong phong bì
+function updateGuestNameDisplay(name) {
+    if (!name) return;
+    
+    // Tìm phần letter trong phong bì
+    const letterElement = document.querySelector('.letter');
+    
+    if (letterElement) {
+        // Đảm bảo letter có position relative để overlay hoạt động
+        letterElement.style.position = 'relative';
+        
+        // Kiểm tra xem đã có overlay chưa
+        let guestOverlay = letterElement.querySelector('.guest-name-overlay');
+        
+        if (!guestOverlay) {
+            // Tạo overlay cho tên khách mời
+            guestOverlay = document.createElement('div');
+            guestOverlay.className = 'guest-name-overlay';
+            guestOverlay.style.cssText = `
+                position: absolute;
+                bottom: 13%;
+                left: 40%;
+                transform: translateX(-50%);
+                color: rgb(58, 74, 58);
+                font-size: 18px;
+                font-family: "Dancing Script", "Great Vibes", cursive;
+                font-weight: 500;
+                text-align: center;
+                white-space: nowrap;
+                pointer-events: none;
+                z-index: 10;
+            `;
+            letterElement.appendChild(guestOverlay);
+        }
+        
+        // Cập nhật tên
+        guestOverlay.textContent = name;
+        console.log('Updated letter with guest name:', name);
+    } else {
+        console.log('Letter element not found');
+    }
+}
+
+// Khởi tạo khi DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Đợi một chút để DOM load xong
+    setTimeout(loadGuestFromGoogleSheets, 1000);
+});
+
+// Cũng thử khi window load hoàn tất
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        // Nếu chưa load được, thử lại
+        if (!guestName && getUrlParam('guest')) {
+            loadGuestFromGoogleSheets();
+        }
+    }, 1500);
+});
 
 // Import PhotoSwipe ES modules
 import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe-lightbox.esm.min.js';
@@ -1120,4 +1267,258 @@ document.addEventListener('DOMContentLoaded', function() {
 // Also try on window load
 window.addEventListener('load', function() {
     setTimeout(initScrollAnimations, 500);
+});
+
+// ==========================================
+// RSVP FORM - Submit attendance to Google Sheets
+// Sử dụng chung Google Sheet với danh sách khách mời ở trên
+// Sheet ID: 135CDt4uSmH-HRrxicnsqSXuk3sW1N0eccLbynacM_mE
+// Sheet Name: Danh Sách Khách Đại
+// ==========================================
+
+// ⚠️ URL Apps Script đã được cấu hình
+// Vào Sheet > Extensions > Apps Script > Deploy > Web app
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz36Y6hzXT9kX2CiYzAgH9cGuNbusHzj4ViC4VNLiB4I9ZrfeQ24CtezzJMwFJI9D39/exec';
+
+// Khởi tạo form RSVP
+function initRSVPForm() {
+    const rsvpForm = document.querySelector('.rsvp-form form');
+    const nameInput = document.querySelector('input[name="rsvp-name"]');
+    
+    if (!rsvpForm) {
+        console.log('RSVP form not found');
+        return;
+    }
+    
+    // Pre-fill tên khách nếu đã load từ Google Sheets
+    if (guestName && nameInput) {
+        nameInput.value = guestName;
+        nameInput.setAttribute('readonly', 'readonly');
+        nameInput.style.backgroundColor = '#f0f0f0';
+        nameInput.style.cursor = 'not-allowed';
+        console.log('Pre-filled guest name:', guestName);
+    }
+    
+    // Handle form submit
+    rsvpForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const name = nameInput ? nameInput.value.trim() : '';
+        const attendanceRadio = document.querySelector('input[name="rsvp-attendance"]:checked');
+        const attendance = attendanceRadio ? attendanceRadio.value : 'yes';
+        const guestId = getUrlParam('guest');
+        
+        if (!name) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Thiếu thông tin',
+                text: 'Vui lòng nhập họ tên của bạn!',
+                confirmButtonColor: '#3a4a3a'
+            });
+            return;
+        }
+        
+        // Kiểm tra URL Apps Script
+        if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Cảm ơn bạn!',
+                text: attendance === 'yes' 
+                    ? 'Chúng tôi rất vui được đón tiếp bạn!' 
+                    : 'Cảm ơn bạn đã phản hồi. Hy vọng gặp bạn vào dịp khác!',
+                confirmButtonColor: '#3a4a3a'
+            });
+            console.log('RSVP Data (Apps Script not configured):', { guestId, name, attendance });
+            return;
+        }
+        
+        // Hiển thị loading
+        Swal.fire({
+            title: 'Đang gửi...',
+            text: 'Vui lòng đợi trong giây lát',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        // Gửi dữ liệu đến Apps Script
+        try {
+            await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Required for Apps Script
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    guestId: guestId || '',
+                    guestName: name,
+                    attendance: attendance
+                })
+            });
+            
+            // Hiển thị thông báo thành công
+            Swal.fire({
+                icon: 'success',
+                title: 'Cảm ơn bạn!',
+                text: attendance === 'yes' 
+                    ? 'Chúng tôi rất vui được đón tiếp bạn!' 
+                    : 'Cảm ơn bạn đã phản hồi. Hy vọng gặp bạn vào dịp khác!',
+                confirmButtonColor: '#3a4a3a'
+            });
+            
+            console.log('RSVP submitted successfully:', { guestId, name, attendance });
+            
+        } catch (error) {
+            console.error('RSVP submit error:', error);
+            // Vẫn hiển thị thành công vì no-cors không trả về response
+            Swal.fire({
+                icon: 'success',
+                title: 'Cảm ơn bạn!',
+                text: attendance === 'yes' 
+                    ? 'Chúng tôi rất vui được đón tiếp bạn!' 
+                    : 'Cảm ơn bạn đã phản hồi. Hy vọng gặp bạn vào dịp khác!',
+                confirmButtonColor: '#3a4a3a'
+            });
+        }
+    });
+    
+    console.log('RSVP form initialized!');
+}
+
+// ==========================================
+// RSVP AUTO POPUP - Hiển thị popup sau 10 giây
+// ==========================================
+const POPUP_STORAGE_KEY = 'rsvp_popup_dismissed';
+const POPUP_DISMISS_DURATION = 24 * 60 * 60 * 1000; // 1 ngày = 24 giờ
+
+function shouldShowRSVPPopup() {
+    const dismissedTime = localStorage.getItem(POPUP_STORAGE_KEY);
+    if (!dismissedTime) return true;
+    
+    const now = Date.now();
+    const dismissed = parseInt(dismissedTime, 10);
+    
+    // Kiểm tra đã qua 1 ngày chưa
+    if (now - dismissed > POPUP_DISMISS_DURATION) {
+        localStorage.removeItem(POPUP_STORAGE_KEY);
+        return true;
+    }
+    
+    return false;
+}
+
+function dismissRSVPPopupFor1Day() {
+    localStorage.setItem(POPUP_STORAGE_KEY, Date.now().toString());
+}
+
+function showRSVPPopup() {
+    // Kiểm tra có nên hiển thị popup không
+    if (!shouldShowRSVPPopup()) {
+        console.log('RSVP popup was dismissed, not showing');
+        return;
+    }
+    
+    // Lấy tên khách nếu có
+    const displayName = guestName || 'Quý khách';
+    
+    Swal.fire({
+        title: `Xin chào ${displayName}!`,
+        html: `
+            <p style="margin-bottom: 16px; color: #4b5320;">Bạn có tham dự đám cưới của chúng mình không?</p>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="popup-attendance" value="yes" checked style="width: 18px; height: 18px;">
+                    <span style="color: #3a4a3a;">Có, tôi sẽ tham dự 💕</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="popup-attendance" value="no" style="width: 18px; height: 18px;">
+                    <span style="color: #3a4a3a;">Rất tiếc không thể tham dự</span>
+                </label>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Gửi xác nhận',
+        cancelButtonText: 'Để sau',
+        confirmButtonColor: '#3a4a3a',
+        cancelButtonColor: '#888',
+        footer: `
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; color: #666;">
+                <input type="checkbox" id="dont-show-again" style="width: 16px; height: 16px;">
+                <span>Không hiển thị lại trong 1 ngày</span>
+            </label>
+        `,
+        customClass: {
+            popup: 'rsvp-popup',
+            title: 'rsvp-popup-title'
+        },
+        preConfirm: () => {
+            const selectedRadio = document.querySelector('input[name="popup-attendance"]:checked');
+            return selectedRadio ? selectedRadio.value : 'yes';
+        },
+        willClose: () => {
+            // Kiểm tra checkbox "không hiển thị lại"
+            const dontShowCheckbox = document.getElementById('dont-show-again');
+            if (dontShowCheckbox && dontShowCheckbox.checked) {
+                dismissRSVPPopupFor1Day();
+                console.log('RSVP popup dismissed for 1 day');
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const attendance = result.value;
+            const guestId = getUrlParam('guest');
+            const name = guestName || '';
+            
+            // Gửi đến Google Sheets nếu đã cấu hình
+            if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL') {
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guestId, guestName: name, attendance })
+                }).catch(err => console.error('Popup RSVP error:', err));
+            }
+            
+            // Hiển thị cảm ơn
+            Swal.fire({
+                icon: 'success',
+                title: 'Cảm ơn bạn!',
+                text: attendance === 'yes' 
+                    ? 'Chúng tôi rất vui được đón tiếp bạn!' 
+                    : 'Cảm ơn bạn đã phản hồi!',
+                confirmButtonColor: '#3a4a3a',
+                timer: 3000,
+                timerProgressBar: true
+            });
+            
+            // Cập nhật form nếu có
+            const formRadio = document.querySelector(`input[name="rsvp-attendance"][value="${attendance}"]`);
+            if (formRadio) {
+                formRadio.checked = true;
+            }
+            
+            console.log('Popup RSVP submitted:', { guestId, name, attendance });
+        }
+    });
+}
+
+// Hiển thị popup sau 10 giây
+function initRSVPPopup() {
+    setTimeout(function() {
+        showRSVPPopup();
+    }, 10000); // 10 giây
+}
+
+// Khởi tạo RSVP form khi DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initRSVPForm, 2500);
+});
+
+// Also try on window load
+window.addEventListener('load', function() {
+    setTimeout(initRSVPForm, 2000);
+    // Khởi tạo popup sau khi load xong
+    initRSVPPopup();
 });
