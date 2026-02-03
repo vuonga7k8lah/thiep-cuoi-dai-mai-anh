@@ -53,6 +53,61 @@ gtag('config', 'G-24WP7GNL8X');
 // ==========================================
 // DYNAMIC DATA LOADING - Based on URL parameter
 // ==========================================
+
+// ⚠️ ALBUM IMAGES - Thay đổi mảng này để cập nhật ảnh trong Album
+// 
+// HƯỚNG DẪN SỬ DỤNG GOOGLE DRIVE:
+// 1. Upload ảnh lên Google Drive
+// 2. Click chuột phải -> Share -> Anyone with the link -> Copy link
+// 3. Link phải có dạng: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+//    (KHÔNG dùng link drive-viewer vì nó không hoạt động!)
+//
+// Hoặc dùng URL ảnh trực tiếp từ: Cloudinary, Imgur, hoặc server của bạn
+//
+const ALBUM_IMAGES = [
+    // Ảnh demo - thay thế bằng ảnh của bạn
+    'https://assets.cinelove.me/templates/assets/5731de59-c0f3-4fa7-9860-e5e47b829ce3/86b9e00f-fe4b-468c-bc56-a5de1b4df1b6.jpg',
+    'https://assets.cinelove.me/templates/assets/5731de59-c0f3-4fa7-9860-e5e47b829ce3/c4d45265-947c-414c-b53f-f291586faeea.jpg',
+    'https://assets.cinelove.me/templates/assets/5731de59-c0f3-4fa7-9860-e5e47b829ce3/4f47af51-8e8a-4d7b-ac15-3ab24b0a79a5.jpg',
+    // Thêm ảnh Google Drive (đúng format):
+    // 'https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing',
+];
+
+// Helper function: Convert Google Drive sharing link to direct image URL
+function convertToDirectUrl(url) {
+    // Pattern 1: Standard sharing link
+    // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+    let driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/\?]+)/);
+    if (driveMatch && driveMatch[1]) {
+        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    }
+    
+    // Pattern 2: Open link
+    // https://drive.google.com/open?id=FILE_ID
+    driveMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+    if (driveMatch && driveMatch[1]) {
+        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    }
+    
+    // Pattern 3: Thumbnail link (already direct)
+    if (url.includes('drive.google.com/thumbnail')) {
+        return url;
+    }
+    
+    // Pattern 4: uc?export link (already direct)
+    if (url.includes('drive.google.com/uc')) {
+        return url;
+    }
+    
+    // Return original URL for non-Google Drive links
+    return url;
+}
+
+// Get processed album URLs
+function getAlbumUrls() {
+    return ALBUM_IMAGES.filter(url => url && !url.includes('drive-viewer')).map(convertToDirectUrl);
+}
+
 let weddingData = null;
 let currentType = 'chu_re'; // Default to groom's side
 
@@ -323,66 +378,86 @@ import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photo
 function initPhotoSwipe() {
     console.log('Initializing PhotoSwipe...');
     
-    // Collect all images from the page for PhotoSwipe (only Cloudinary images)
+    // Collect all images for PhotoSwipe
     const galleryImages = [];
-    const CLOUDINARY_PREFIX = 'https://res.cloudinary.com';
     
-    // Helper function to get high-res Cloudinary URL
+    // Helper function to get high-res URL
     function getHighResUrl(originalUrl) {
-        // If it's a Cloudinary URL, try to get the highest quality version
+        // If it's a Cloudinary URL, get highest quality
         if (originalUrl.includes('cloudinary.com')) {
-            // Remove any existing transformations and request original quality
-            // Cloudinary URL pattern: .../upload/v12345/image.jpg
-            // We can add transformation like q_auto:best,f_auto for best quality
             return originalUrl.replace('/upload/', '/upload/q_auto:best,f_auto/');
+        }
+        // If it's a cinelove URL with resize params, remove them for full quality
+        if (originalUrl.includes('img.cinelove.me')) {
+            return originalUrl.replace(/\?resize=.*$/, '').replace('img.cinelove.me', 'assets.cinelove.me');
         }
         return originalUrl;
     }
     
-    // Find the Album of Love gallery
-    const albumGalleryDiv = document.querySelector('.photo-gallery-wrapper');
-    if (albumGalleryDiv) {
-        const images = albumGalleryDiv.querySelectorAll('.image-gallery-slide img');
-        console.log('Found album images:', images.length);
-        images.forEach(function (img) {
-            // Only add Cloudinary images to PhotoSwipe gallery
-            if (img.src && img.src.startsWith(CLOUDINARY_PREFIX)) {
-                galleryImages.push({
-                    src: getHighResUrl(img.src),
-                    // Use larger default dimensions for high-res display
-                    width: 4000,
-                    height: 3000,
-                    alt: img.alt || 'Photo'
-                });
-            }
+    // PRIORITY 1: Use ALBUM_IMAGES config if defined and has images
+    if (typeof ALBUM_IMAGES !== 'undefined' && ALBUM_IMAGES.length > 0) {
+        console.log('Using ALBUM_IMAGES config with', ALBUM_IMAGES.length, 'images');
+        const processedUrls = getAlbumUrls();
+        processedUrls.forEach(function(url, index) {
+            galleryImages.push({
+                src: url,
+                width: 2000,
+                height: 1500,
+                alt: 'Photo ' + (index + 1)
+            });
         });
     }
-
-    // Collect individual photo components
-    const photoComponents = document.querySelectorAll('.photo-bg-wrap');
-    console.log('Found photo components:', photoComponents.length);
-    photoComponents.forEach(function (photo) {
-        // Skip if already in album gallery
-        if (photo.closest('.photo-gallery-wrapper')) return;
-
-        // Extract background image URL
-        const bgImage = photo.style.backgroundImage;
-        if (bgImage && bgImage !== 'none') {
-            const imageUrl = bgImage.slice(4, -1).replace(/"/g, "");
-            // Only add Cloudinary images to PhotoSwipe gallery
-            if (imageUrl && imageUrl.startsWith(CLOUDINARY_PREFIX)) {
-                galleryImages.push({
-                    src: getHighResUrl(imageUrl),
-                    // Use larger default dimensions for high-res display
-                    width: 4000,
-                    height: 3000,
-                    alt: 'Photo'
+    
+    // PRIORITY 2: If no config images, collect from DOM
+    if (galleryImages.length === 0) {
+        const albumGalleryDiv = document.querySelector('.photo-gallery-wrapper');
+        if (albumGalleryDiv) {
+            // Get main display image
+            const mainImages = albumGalleryDiv.querySelectorAll('.object-contain, .object-cover');
+            console.log('Found main album images in DOM:', mainImages.length);
+            
+            // Use a Set to avoid duplicates
+            const addedUrls = new Set();
+            
+            mainImages.forEach(function (img) {
+                if (img.src && !addedUrls.has(img.src)) {
+                    const highResUrl = getHighResUrl(img.src);
+                    if (!addedUrls.has(highResUrl)) {
+                        addedUrls.add(highResUrl);
+                        addedUrls.add(img.src);
+                        galleryImages.push({
+                            src: highResUrl,
+                            width: 2000,
+                            height: 1500,
+                            alt: img.alt || 'Photo'
+                        });
+                    }
+                }
+            });
+            
+            // Also get thumbnails if main images weren't found
+            if (galleryImages.length === 0) {
+                const thumbs = albumGalleryDiv.querySelectorAll('button img');
+                thumbs.forEach(function (img) {
+                    if (img.src && !addedUrls.has(img.src)) {
+                        const highResUrl = getHighResUrl(img.src);
+                        if (!addedUrls.has(highResUrl)) {
+                            addedUrls.add(highResUrl);
+                            addedUrls.add(img.src);
+                            galleryImages.push({
+                                src: highResUrl,
+                                width: 2000,
+                                height: 1500,
+                                alt: img.alt || 'Photo'
+                            });
+                        }
+                    }
                 });
             }
         }
-    });
+    }
 
-    console.log('Total gallery images:', galleryImages.length);
+    console.log('Total gallery images for PhotoSwipe:', galleryImages.length);
 
     // Initialize PhotoSwipe Lightbox
     if (galleryImages.length > 0) {
@@ -427,99 +502,84 @@ function initPhotoSwipe() {
             clickToCloseNonZoomable: false,
             imageClickAction: 'zoom',
             tapAction: 'toggle-controls',
-            // Enable max zoom for sharp viewing
             maxZoomLevel: 4,
-            // Preload adjacent slides for smoother navigation
             preload: [1, 2]
         });
         
-        // Load actual image dimensions dynamically for better quality
+        // Load actual image dimensions dynamically
         lightbox.on('itemData', (e) => {
             const img = new Image();
             img.src = e.itemData.src;
             img.onload = function() {
-                e.itemData.width = this.naturalWidth || 4000;
-                e.itemData.height = this.naturalHeight || 3000;
+                e.itemData.width = this.naturalWidth || 2000;
+                e.itemData.height = this.naturalHeight || 1500;
             };
         });
         
         lightbox.init();
         console.log('PhotoSwipe initialized successfully!');
+        
+        // Store lightbox globally for access
+        window.photoSwipeLightbox = lightbox;
 
-        // Add click handlers to album gallery images (only for Cloudinary images)
-        if (albumGalleryDiv) {
-            const albumImages = albumGalleryDiv.querySelectorAll('.image-gallery-slide img');
-            let cloudinaryIndex = 0;
-            albumImages.forEach(function (img) {
-                // Only add click handler for Cloudinary images
-                if (img.src && img.src.startsWith(CLOUDINARY_PREFIX)) {
-                    img.style.cursor = 'pointer';
-                    const slideElement = img.closest('.image-gallery-slide');
-                    if (slideElement) {
-                        const currentIndex = cloudinaryIndex;
-                        slideElement.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            console.log('Opening Cloudinary image at index:', currentIndex);
-                            lightbox.loadAndOpen(currentIndex);
+        // Add click handlers to Album - main image area
+        const galleryDiv = document.querySelector('.photo-gallery-wrapper');
+        if (galleryDiv) {
+            // Click on main display area opens lightbox
+            const mainDisplayArea = galleryDiv.querySelector('.relative.flex-1');
+            if (mainDisplayArea) {
+                mainDisplayArea.style.cursor = 'pointer';
+                mainDisplayArea.addEventListener('click', function(e) {
+                    // Don't trigger on navigation buttons
+                    if (e.target && e.target.closest && e.target.closest('button')) return;
+                    
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // For ALBUM_IMAGES config, always start at 0 or use current slide index
+                    let currentIndex = 0;
+                    
+                    // Try to get current slide index from thumbnail
+                    const activeThumbnail = galleryDiv.querySelector('button.border-blue-500');
+                    if (activeThumbnail) {
+                        const allThumbs = galleryDiv.querySelectorAll('.flex.gap-2 button');
+                        allThumbs.forEach((thumb, idx) => {
+                            if (thumb === activeThumbnail) {
+                                currentIndex = idx;
+                            }
                         });
                     }
-                    cloudinaryIndex++;
-                }
-            });
-
-            // Also add click handlers to the thumbnails (only for Cloudinary images)
-            const thumbnailImages = albumGalleryDiv.querySelectorAll('.image-gallery-thumbnail img');
-            let thumbCloudinaryIndex = 0;
-            thumbnailImages.forEach(function (thumb) {
-                // Only add click handler for Cloudinary images
-                if (thumb.src && thumb.src.startsWith(CLOUDINARY_PREFIX)) {
-                    thumb.style.cursor = 'pointer';
-                    const thumbElement = thumb.closest('.image-gallery-thumbnail');
-                    if (thumbElement) {
-                        const currentIndex = thumbCloudinaryIndex;
-                        thumbElement.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            console.log('Opening Cloudinary image from thumbnail at index:', currentIndex);
-                            lightbox.loadAndOpen(currentIndex);
-                        });
-                    }
-                    thumbCloudinaryIndex++;
-                }
-            });
-        }
-
-        // Add click handlers for individual photo components (only for Cloudinary images)
-        let photoIndex = albumGalleryDiv ? 
-            Array.from(albumGalleryDiv.querySelectorAll('.image-gallery-slide img'))
-                .filter(img => img.src && img.src.startsWith(CLOUDINARY_PREFIX)).length : 0;
-        photoComponents.forEach(function (photo) {
-            // Skip if already in album gallery
-            if (photo.closest('.photo-gallery-wrapper')) return;
-
-            const bgImage = photo.style.backgroundImage;
-            if (bgImage && bgImage !== 'none') {
-                const imageUrl = bgImage.slice(4, -1).replace(/"/g, "");
-                // Only add click handler for Cloudinary images
-                if (imageUrl && imageUrl.startsWith(CLOUDINARY_PREFIX)) {
-                    const container = photo.closest('[data-node-id]');
-                    if (container && !container.classList.contains('component-locked')) {
-                        container.style.cursor = 'pointer';
-                        const currentIndex = photoIndex;
-                        container.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            console.log('Opening individual Cloudinary photo at index:', currentIndex);
-                            lightbox.loadAndOpen(currentIndex);
-                        });
-                        photoIndex++;
-                    }
-                }
+                    
+                    console.log('Opening PhotoSwipe at index:', currentIndex);
+                    lightbox.loadAndOpen(currentIndex);
+                });
             }
-        });
+            
+            // Also add click to fullscreen button
+            const fullscreenBtn = galleryDiv.querySelector('button.absolute.right-2.top-2');
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    let currentIndex = 0;
+                    const activeThumbnail = galleryDiv.querySelector('button.border-blue-500');
+                    if (activeThumbnail) {
+                        const allThumbs = galleryDiv.querySelectorAll('.flex.gap-2 button');
+                        allThumbs.forEach((thumb, idx) => {
+                            if (thumb === activeThumbnail) {
+                                currentIndex = idx;
+                            }
+                        });
+                    }
+                    
+                    console.log('Opening PhotoSwipe from fullscreen button at index:', currentIndex);
+                    lightbox.loadAndOpen(currentIndex);
+                });
+            }
+        }
     } else {
-        console.error('No images found for PhotoSwipe gallery');
+        console.log('No images found for PhotoSwipe in album gallery');
     }
 }
 
@@ -528,6 +588,8 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM Content Loaded');
     // Wait for dynamic content to load
     setTimeout(initPhotoSwipe, 2000);
+    // Initialize mobile responsive scaling
+    initMobileResponsive();
 });
 
 // Also try when everything is fully loaded
@@ -541,7 +603,61 @@ window.addEventListener('load', function () {
             initPhotoSwipe();
         }
     }, 1000);
+    // Re-apply mobile scaling after full load
+    initMobileResponsive();
 });
+
+// ==========================================
+// MOBILE RESPONSIVE - Dynamic scaling
+// ==========================================
+function initMobileResponsive() {
+    const container = document.getElementById('root-page-container');
+    if (!container) return;
+    
+    const originalWidth = 500; // Original design width
+    
+    function applyScale() {
+        const viewportWidth = window.innerWidth;
+        
+        // Only apply on mobile (< 520px)
+        if (viewportWidth < 520) {
+            const scaleFactor = viewportWidth / originalWidth;
+            
+            // Apply to container
+            container.style.width = '100vw';
+            container.style.maxWidth = '100vw';
+            container.style.transform = 'none';
+            container.style.left = '0';
+            
+            // Find the innermost content wrapper
+            const innerWrapper = container.querySelector('.w-full.h-full');
+            if (innerWrapper) {
+                innerWrapper.style.transform = `scale(${scaleFactor})`;
+                innerWrapper.style.transformOrigin = 'top left';
+                innerWrapper.style.width = originalWidth + 'px';
+            }
+            
+            console.log('Mobile responsive applied, scale:', scaleFactor);
+        } else {
+            // Reset on desktop
+            container.style.width = '';
+            container.style.maxWidth = '';
+            container.style.transform = '';
+            container.style.left = '';
+            
+            const innerWrapper = container.querySelector('.w-full.h-full');
+            if (innerWrapper) {
+                innerWrapper.style.transform = '';
+                innerWrapper.style.transformOrigin = '';
+                innerWrapper.style.width = '';
+            }
+        }
+    }
+    
+    // Apply on load and resize
+    applyScale();
+    window.addEventListener('resize', applyScale);
+}
 
 // ==========================================
 // COUNTDOWN TIMER - Wedding Date: 28/12/2025 16:00
@@ -716,8 +832,13 @@ function initEnvelope() {
         return;
     }
     
-    // Find the outer envelope component (first one with this data-node-id)
-    const envelopeComponent = document.querySelector('.animated-envelope-component[data-node-id="FlIA12U-JR"]');
+    // Find the envelope component - try multiple selectors
+    let envelopeComponent = document.querySelector('.animated-envelope-component[data-node-id="rP4afTQMIg"]');
+    
+    // Fallback: find by class only
+    if (!envelopeComponent) {
+        envelopeComponent = document.querySelector('.animated-envelope-component');
+    }
     
     if (!envelopeComponent) {
         console.log('Envelope component not found');
@@ -740,9 +861,16 @@ function initEnvelope() {
     // Make it clickable
     envelopeComponent.style.cursor = 'pointer';
     
-    // Add click event on the whole component
-    envelopeComponent.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent event bubbling
+    // Find clickable elements inside envelope
+    const waxSeal = envelopeComponent.querySelector('.wax-seal');
+    const letter = envelopeComponent.querySelector('.letter');
+    const flap = envelopeComponent.querySelector('.flap');
+    const pocket = envelopeComponent.querySelector('.pocket');
+    
+    // Function to toggle envelope
+    function toggleEnvelope(e) {
+        e.stopPropagation();
+        e.preventDefault();
         
         console.log('Envelope clicked!');
         
@@ -773,7 +901,28 @@ function initEnvelope() {
             envelopeContainer.classList.add('open');
             console.log('Envelope opened. Classes:', envelopeContainer.className);
         }
-    });
+    }
+    
+    // Add click event on the whole component
+    envelopeComponent.addEventListener('click', toggleEnvelope);
+    
+    // Also add click to individual parts for better touch support
+    if (waxSeal) {
+        waxSeal.style.cursor = 'pointer';
+        waxSeal.addEventListener('click', toggleEnvelope);
+    }
+    if (letter) {
+        letter.style.cursor = 'pointer';
+        letter.addEventListener('click', toggleEnvelope);
+    }
+    if (flap) {
+        flap.style.cursor = 'pointer';
+        flap.addEventListener('click', toggleEnvelope);
+    }
+    if (pocket) {
+        pocket.style.cursor = 'pointer';
+        pocket.addEventListener('click', toggleEnvelope);
+    }
     
     console.log('Envelope click handler initialized!');
 }

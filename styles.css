@@ -8345,3 +8345,685 @@ a, button, [role="button"], .cursor-pointer {
     opacity: 1 !important;
     transform: translateY(0) !important;
 }
+
+/* ============================================
+   COMPACT LAYOUT - Giảm khoảng cách giữa các khối
+   ============================================ */
+
+/* Định nghĩa khoảng cách chuẩn */
+:root {
+    --section-gap: 30px;
+}
+
+/* 
+ * Điều chỉnh vị trí các section chính
+ * Sử dụng CSS attribute selector để target các node cụ thể
+ */
+
+/* Container chính - điều chỉnh chiều cao */
+#root-page-container {
+    height: auto !important;
+    min-height: auto !important;
+    padding-bottom: 100px;
+}
+
+#root-page-container > div:first-child {
+    height: auto !important;
+    min-height: auto !important;
+}
+
+/* Section "Thông tin cô dâu chú rể" - giữ nguyên vị trí bắt đầu */
+[style*="top: 613px"] {
+    top: 622px !important;
+}
+
+/* LỄ VU QUY - Đẩy lên gần hơn, cách section trước 30px */
+[data-node-id="Wh69FMmPd5"][style*="top: 1816px"] {
+    top: 1130px !important;
+}
+
+[data-node-id="-oDsT-4U9P"][style*="top: 1860px"] {
+    top: 1174px !important;
+}
+
+[data-node-id="htdC7YYpVX"][style*="top: 1883px"] {
+    top: 1197px !important;
+}
+
+[data-node-id="TFyJjGLF78"][style*="top: 1900px"] {
+    top: 1214px !important;
+}
+
+[data-node-id="etetaMfrSG"][style*="top: 1900px"],
+[data-node-id="26cHb_nQyS"][style*="top: 1900px"],
+[data-node-id="QgBD2ShpN6"][style*="top: 1900px"] {
+    top: 1214px !important;
+}
+
+[data-node-id="tpsQT2riiq"][style*="top: 1970px"] {
+    top: 1284px !important;
+}
+
+[data-node-id="ScsVAX_WGX"][style*="top: 1997px"] {
+    top: 1311px !important;
+}
+
+/* Hình trang trí */
+[data-node-id="5NZsaaghwv"][style*="top: 1949.63px"] {
+    top: 1263px !important;
+}
+
+/* Nút chỉ đường nhà gái */
+[data-node-id="ujS95UZ_yB"][style*="top: 2066.82px"],
+[data-node-id="8A6z2O4ZXB"][style*="top: 2072.82px"] {
+    top: calc(1380px + var(--section-gap)) !important;
+}
+
+[data-node-id="8A6z2O4ZXB"][style*="top: 2072.82px"] {
+    top: 1386px !important;
+}
+
+/* LỄ THÀNH HÔN - Đẩy lên */
+[data-node-id="_YLQhYsBhW"][style*="top: 2303.02px"] {
+    top: 1617px !important;
+}
+
+[data-node-id="oubOrReWeS"][style*="top: 2308.94px"] {
+    top: 1623px !important;
+}
+
+[data-node-id="CkKt0QonCY"][style*="top: 2335px"] {
+    top: 1649px !important;
+}
+
+[data-node-id="3ppIbNjcrY"][style*="top: 2385.24px"] {
+    top: 1699px !important;
+}
+
+[data-node-id="sYWwou49b7"][style*="top: 2400.08px"] {
+    top: 1714px !important;
+}
+
+[data-node-id="JWeAF-FlV8"][style*="top: 2415.16px"] {
+    top: 1729px !important;
+}
+
+[data-node-id="bRMl73zTH5"][style*="top: 2415px"] {
+    top: 1729px !important;
+}
+
+/* ===========================================
+   SECTION: LỄ THÀNH HÔN Continuation (~2415px-2600px)
+   Current offset: ~686px
+   =========================================== */
+[data-node-id="SMN8PbTXP_"][style*="top: 2415px"],
+[data-node-id="pQALJ2gdSh"][style*="top: 2415.37px"] {
+    top: 1729px !important;
+}
+
+[data-node-id="798a4DSTft"][style*="top: 2490.14px"] {
+    top: 1804px !important;
+}
+
+[data-node-id="5H1N5bi_Nu"][style*="top: 2520.01px"] {
+    top: 1834px !important;
+}
+
+/* ===========================================
+   SECTION: Sweet Wedding / Marry Me? (~2577px-3400px)
+   Offset: ~768px (increasing gap reduction)
+   =========================================== */
+[data-node-id="Otl-x1ZRQq"][style*="top: 2577.67px"] {
+    top: 1960px !important;
+}
+
+[data-node-id="EUTACplEPl"][style*="top: 2608.51px"],
+[data-node-id="yAyLslnFSW"][style*="top: 2608.51px"] {
+    top: 1990px !important;
+}
+
+[data-node-id="MXAvRYsSSI"][style*="top: 2681.09px"] {
+    top: 2063px !important;
+}
+
+[data-node-id="1NjyOJEzF8"][style*="top: 2695.29px"] {
+    top: 2077px !important;
+}
+
+[data-node-id="9Vgg0FGheE"][style*="top: 2738.72px"],
+[data-node-id="-iH4xr2oh0"][style*="top: 2738.16px"] {
+    top: 2120px !important;
+}
+
+[data-node-id="mNWHJQG_w0"][style*="top: 2834.49px"],
+[data-node-id="DBdileGczB"][style*="top: 2834.52px"] {
+    top: 2216px !important;
+}
+
+[data-node-id="-i1VCh3Ex4"][style*="top: 2931.52px"] {
+    top: 2313px !important;
+}
+
+[data-node-id="U4dOo_ye0c"][style*="top: 2077.05px"] {
+    top: 1391px !important;
+}
+
+/* ===========================================
+   SECTION: Album of Love - Đặt ở vị trí 5000px
+   (sau timeline)
+   =========================================== */
+[data-node-id="wyW4plrQy9"][style*="top: 2952.82px"] {
+    top: 4600px !important;
+}
+
+[data-node-id="PMrottrG3R"][style*="top: 2999.91px"] {
+    top: 4647px !important;
+}
+
+[data-node-id="ISIUPg2woZ"][style*="top: 3035.86px"] {
+    top: 4683px !important;
+}
+
+[data-node-id="IZgw7JIB0d"][style*="top: 3086.74px"] {
+    top: 4734px !important;
+}
+
+[data-node-id="5EGz2EhA_a"][style*="top: 3165.6px"] {
+    top: 4813px !important;
+}
+
+/* Yes I Do section */
+[data-node-id="eztPvUB2Go"][style*="top: 3156.74px"] {
+    top: 2538px !important;
+}
+
+[data-node-id="3RSuu6twqF"][style*="top: 3207.69px"],
+[data-node-id="ihmsfgVT_l"][style*="top: 3207.69px"],
+[data-node-id="HlLbTT9Ww8"][style*="top: 3207.69px"],
+[data-node-id="qvUO2JM4jr"][style*="top: 3207.69px"] {
+    top: 2590px !important;
+}
+
+[data-node-id="vZU8Nf2sVC"][style*="top: 3278.69px"],
+[data-node-id="PnL5s18wvr"][style*="top: 3278.69px"],
+[data-node-id="kETrJ2PD7r"][style*="top: 3278.69px"],
+[data-node-id="lUOWEjCBHN"][style*="top: 3278.69px"] {
+    top: 2661px !important;
+}
+
+/* ===========================================
+   SECTION: About Us - Bride (~3423px-4143px)
+   Offset: ~998px
+   =========================================== */
+[data-node-id="qnwLjq0A5W"][style*="top: 3423.14px"] {
+    top: 2365px !important;
+}
+
+[data-node-id="IV8x5F0yEr"][style*="top: 3425.77px"] {
+    top: 2368px !important;
+}
+
+[data-node-id="8dGQgvj_tv"][style*="top: 3484.73px"] {
+    top: 2427px !important;
+}
+
+[data-node-id="qdnXaR5Qnu"][style*="top: 3509.67px"] {
+    top: 2452px !important;
+}
+
+[data-node-id="Z5yYxBQgzB"][style*="top: 3569.53px"] {
+    top: 2512px !important;
+}
+
+[data-node-id="xWGqZQdC7S"][style*="top: 3605.38px"] {
+    top: 2548px !important;
+}
+
+[data-node-id="Z_sqsL03TS"][style*="top: 3659.85px"] {
+    top: 2602px !important;
+}
+
+[data-node-id="Ajivx5NsVa"][style*="top: 3891.41px"] {
+    top: 2683px !important;
+}
+
+[data-node-id="J2ytwW60lO"][style*="top: 3914.51px"] {
+    top: 2706px !important;
+}
+
+[data-node-id="O4qFTubpPD"][style*="top: 3960.38px"] {
+    top: 2752px !important;
+}
+
+/* ===========================================
+   SECTION: About Us - Groom (~4190px-5010px)
+   Offset: ~1178px
+   =========================================== */
+[data-node-id="t5Fpx8Gyk6"][style*="top: 4190.51px"],
+[data-node-id="mcEtLlYWeJ"][style*="top: 4191.37px"] {
+    top: 2802px !important;
+}
+
+[data-node-id="pIGGOVGwNO"][style*="top: 4286.56px"] {
+    top: 2898px !important;
+}
+
+[data-node-id="LUonCeEZkU"][style*="top: 4328.83px"] {
+    top: 2940px !important;
+}
+
+[data-node-id="PKNdPfREuu"][style*="top: 4363.74px"] {
+    top: 2975px !important;
+}
+
+[data-node-id="kEUw8at2wW"][style*="top: 4408.68px"] {
+    top: 3020px !important;
+}
+
+[data-node-id="E545CI_VBk"][style*="top: 4465.55px"] {
+    top: 3077px !important;
+}
+
+[data-node-id="tcVnxPPobN"][style*="top: 4759.73px"] {
+    top: 3371px !important;
+}
+
+[data-node-id="HJ9V01zWc3"][style*="top: 4782.71px"] {
+    top: 3394px !important;
+}
+
+[data-node-id="3TmdZATszZ"][style*="top: 4815.14px"] {
+    top: 3427px !important;
+}
+
+/* ===========================================
+   SECTION: Save The Date (~5040px-5870px)
+   Offset: ~1298px
+   =========================================== */
+[data-node-id="3N4ZEtjvS6"][style*="top: 5040.23px"] {
+    top: 3532px !important;
+}
+
+[data-node-id="niEXlWBSJN"][style*="top: 5053.21px"] {
+    top: 3545px !important;
+}
+
+[data-node-id="Cfkmv4gXU7"][style*="top: 5068px"] {
+    top: 3560px !important;
+}
+
+[data-node-id="dgk-5_grgZ"][style*="top: 5096.7px"] {
+    top: 3588px !important;
+}
+
+[data-node-id="X6v9NTbDCZ"][style*="top: 5112.01px"] {
+    top: 3604px !important;
+}
+
+[data-node-id="CsM3wdp9hl"][style*="top: 5143.88px"] {
+    top: 3636px !important;
+}
+
+[data-node-id="WJTzNfnAT1"][style*="top: 5509.18px"] {
+    top: 4001px !important;
+}
+
+[data-node-id="xsFkCh-QN4"][style*="top: 5510.65px"] {
+    top: 4002px !important;
+}
+
+/* ===========================================
+   SECTION: Calendar Timeline (~5869px-6100px)
+   Offset: ~1578px
+   =========================================== */
+[data-node-id="aYUE311Jkd"][style*="top: 5869.68px"] {
+    top: 4361px !important;
+}
+
+[data-node-id="vn8LzVP4iL"][style*="top: 5873.5px"] {
+    top: 4365px !important;
+}
+
+[data-node-id="ft6eqnvLg8"][style*="top: 5882.71px"],
+[data-node-id="4Q3-6-pwwI"][style*="top: 5882.77px"] {
+    top: 4374px !important;
+}
+
+[data-node-id="cYR1ro10__"][style*="top: 5940.69px"] {
+    top: 4432px !important;
+}
+
+[data-node-id="6D0znjfSq8"][style*="top: 5947.4px"],
+[data-node-id="pr66tJKC64"][style*="top: 5947.37px"] {
+    top: 4439px !important;
+}
+
+[data-node-id="WM1IYthsws"][style*="top: 6018.35px"] {
+    top: 4510px !important;
+}
+
+[data-node-id="SJRSSa34BV"][style*="top: 6026.19px"],
+[data-node-id="scGhyU0cqJ"][style*="top: 6026.17px"] {
+    top: 4518px !important;
+}
+
+/* ===========================================
+   SECTION: Invitation Photos (~6100px-6871px)
+   Offset: ~1858px
+   =========================================== */
+[data-node-id="p-9xHaXykV"][style*="top: 6100.95px"] {
+    top: 4593px !important;
+}
+
+[data-node-id="suNBAEdY_U"][style*="top: 6103.26px"] {
+    top: 4595px !important;
+}
+
+[data-node-id="51Xf5jYfzj"][style*="top: 6131.96px"] {
+    top: 4964px !important;
+}
+
+[data-node-id="uaNarYt8ei"][style*="top: 6160.01px"] {
+    top: 4992px !important;
+}
+
+[data-node-id="uiLSuZJDYq"][style*="top: 6305.25px"] {
+    top: 5137px !important;
+}
+
+[data-node-id="wf0ZFQz_pJ"][style*="top: 6402.92px"] {
+    top: 5235px !important;
+}
+
+[data-node-id="L3AaCrZvGc"][style*="top: 6545.68px"] {
+    top: 5378px !important;
+}
+
+[data-node-id="THVokgiiTm"][style*="top: 6600.04px"] {
+    top: 5432px !important;
+}
+
+/* ===========================================
+   SECTION: RSVP Form (~6871px)
+   Offset: ~2093px
+   =========================================== */
+[data-node-id="SyDWduuu3Z"][style*="top: 6871.12px"] {
+    top: 5508px !important;
+}
+
+/* ===========================================
+   SECTION: Gửi Quà Mừng (~7368px-8000px)
+   Offset: ~2393px
+   =========================================== */
+[data-node-id="bWTuaRnoUo"][style*="top: 7368.44px"] {
+    top: 5485px !important;
+}
+
+[data-node-id="EsRWJCC0XR"][style*="top: 7520.94px"] {
+    top: 5340px !important;
+}
+
+[data-node-id="poJwImDDnk"][style*="top: 7616.8px"] {
+    top: 5436px !important;
+}
+
+[data-node-id="BuirAho-zo"][style*="top: 7619.06px"] {
+    top: 5439px !important;
+}
+
+[data-node-id="dT_KqdvFkj"][style*="top: 7621.93px"] {
+    top: 5442px !important;
+}
+
+[data-node-id="yWe4uNa8eC"][style*="top: 7635.45px"] {
+    top: 5455px !important;
+}
+
+[data-node-id="TcR5JELvVK"][style*="top: 7642.11px"],
+[data-node-id="hYiOVkWJ-6"][style*="top: 7642.11px"] {
+    top: 5462px !important;
+}
+
+[data-node-id="iPjImtIlr4"][style*="top: 7678.5px"] {
+    top: 5498px !important;
+}
+
+[data-node-id="t0Ya66JrSt"][style*="top: 7711.87px"] {
+    top: 5531px !important;
+}
+
+/* Groom gift section */
+[data-node-id="F3DYroHViD"][style*="top: 7857.21px"] {
+    top: 5677px !important;
+}
+
+[data-node-id="6RGJcFAx2z"][style*="top: 7859.33px"] {
+    top: 5679px !important;
+}
+
+[data-node-id="orOPfQQNM2"][style*="top: 7862.37px"] {
+    top: 5682px !important;
+}
+
+[data-node-id="cgHAfHvqvH"][style*="top: 7882.9px"],
+[data-node-id="zLOlfhyqjD"][style*="top: 7882.9px"] {
+    top: 5703px !important;
+}
+
+[data-node-id="ePYKLOWK3M"][style*="top: 7889.61px"] {
+    top: 5709px !important;
+}
+
+[data-node-id="vbVsmkFNC_"][style*="top: 7916.19px"] {
+    top: 5736px !important;
+}
+
+[data-node-id="D5MLJCGR1T"][style*="top: 7950.5px"] {
+    top: 5770px !important;
+}
+
+/* ===========================================
+   SECTION: Thank You (~8077px-8310px)
+   Offset: ~2593px
+   =========================================== */
+[data-node-id="GfJ9YIErr3"][style*="top: 8077.38px"] {
+    top: 5897px !important;
+}
+
+[data-node-id="pZ80uzN0qd"][style*="top: 8210.4px"] {
+    top: 6030px !important;
+}
+
+/* ===========================================
+   Adjust container height for compact layout
+   =========================================== */
+#root-page-container > div:first-child > div:first-child {
+    height: 6350px !important;
+    min-height: 6350px !important;
+}
+
+/* ===========================================
+   MOBILE RESPONSIVE - Full width centered
+   =========================================== */
+
+/* Main container full width on mobile */
+@media screen and (max-width: 520px) {
+    html, body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        background-color: rgb(249, 241, 239) !important;
+    }
+    
+    #root-page-container {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        transform: none !important;
+        left: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Override inline style width */
+    #root-page-container[style] {
+        width: 100vw !important;
+    }
+    
+    #root-page-container > div {
+        width: 100vw !important;
+        overflow: hidden !important;
+    }
+    
+    /* Scale the innermost content wrapper */
+    #root-page-container > div > div.w-full {
+        transform: scale(calc(100vw / 500));
+        transform-origin: top center;
+        width: 500px;
+        margin-left: calc((100vw - 500px * (100vw / 500)) / 2);
+    }
+    
+    /* All absolute positioned children scale properly */
+    #root-page-container [style*="position: absolute"],
+    #root-page-container [style*="position:absolute"] {
+        /* Keep original positioning, let parent handle scale */
+    }
+}
+
+/* Fix envelope on mobile */
+@media screen and (max-width: 520px) {
+    .animated-envelope-component {
+        left: 50% !important;
+        transform: translateX(-50%) rotate(0deg) !important;
+    }
+    
+    .envelope-container {
+        transform-origin: center center !important;
+    }
+}
+
+/* Fix floating toolbar position on mobile */
+@media screen and (max-width: 520px) {
+    .floating-toolbar {
+       right: 20px !important;
+        bottom: 90px !important;
+        gap: 8px !important;
+        z-index: 99999 !important;
+        position: fixed !important;
+    }
+    
+    .toolbar-item {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+/* Album responsive on mobile */
+@media screen and (max-width: 520px) {
+    .photo-gallery-wrapper {
+        width: 100% !important;
+    }
+    
+    .photo-gallery-wrapper .relative.flex-1 {
+        min-height: 250px !important;
+    }
+    
+    .photo-gallery-wrapper img {
+        object-fit: contain !important;
+    }
+}
+
+/* Gift section responsive */
+@media screen and (max-width: 520px) {
+    [data-node-id="bWTuaRnoUo"],
+    [data-node-id="F3DYroHViD"] {
+        width: 95% !important;
+        left: 2.5% !important;
+    }
+}
+
+/* Text scaling for readability */
+@media screen and (max-width: 520px) {
+    .text-box-component div[contenteditable="false"] {
+        word-break: break-word !important;
+        hyphens: auto !important;
+    }
+}
+
+/* PhotoSwipe mobile improvements */
+@media screen and (max-width: 520px) {
+    .pswp {
+        transform: none !important;
+    }
+    
+    .pswp__button {
+        width: 44px !important;
+        height: 44px !important;
+    }
+    
+    .pswp__counter {
+        font-size: 14px !important;
+    }
+}
+
+/* ===========================================
+   CALENDAR FIX - Display as 7-column grid
+   =========================================== */
+.calendar .template-three {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 2px !important;
+    width: 100% !important;
+}
+
+.calendar .template-three > div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    padding: 4px !important;
+}
+
+.calendar .template-three > div > div {
+    text-align: center !important;
+}
+
+/* Mobile calendar adjustments */
+@media screen and (max-width: 520px) {
+    .calendar .template-three {
+        gap: 1px !important;
+    }
+    
+    .calendar .template-three > div {
+        min-width: 24px !important;
+        min-height: 24px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* ===========================================
+   ENVELOPE FIX - Override transform on mobile
+   =========================================== */
+@media screen and (max-width: 520px) {
+    .animated-envelope-component {
+        transform: rotate(0deg) !important;
+        left: 35px !important;
+    }
+}
+
+/* Ensure envelope is clickable on mobile */
+.animated-envelope-component,
+.animated-envelope-component * {
+    pointer-events: auto !important;
+}
+
+.envelope-container {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.wax-seal {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+}
