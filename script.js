@@ -65,12 +65,19 @@ gtag('config', 'G-24WP7GNL8X');
 // Hoặc dùng URL ảnh trực tiếp từ: Cloudinary, Imgur, hoặc server của bạn
 //
 const ALBUM_IMAGES = [
-    // Ảnh demo - thay thế bằng ảnh của bạn
-    'https://assets.cinelove.me/templates/assets/5731de59-c0f3-4fa7-9860-e5e47b829ce3/86b9e00f-fe4b-468c-bc56-a5de1b4df1b6.jpg',
-    'https://assets.cinelove.me/templates/assets/5731de59-c0f3-4fa7-9860-e5e47b829ce3/c4d45265-947c-414c-b53f-f291586faeea.jpg',
-    'https://assets.cinelove.me/templates/assets/5731de59-c0f3-4fa7-9860-e5e47b829ce3/4f47af51-8e8a-4d7b-ac15-3ab24b0a79a5.jpg',
-    // Thêm ảnh Google Drive (đúng format):
-    // 'https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing',
+    // Ảnh từ thư mục image/album
+    'image/album/PMN01376.JPG',
+    'image/album/PMN01542.JPG',
+    'image/album/PMN01559.JPG',
+    'image/album/PMN01774.JPG',
+    'image/album/PMN02008.JPG',
+    'image/album/PMN02027.JPG',
+    'image/album/PMN02091.JPG',
+    'image/album/PMN02367.JPG',
+    'image/album/PMN02572.JPG',
+    'image/album/PMN02580.JPG',
+    'image/album/PMN02685.JPG',
+    'image/album/PMN02855.JPG',
 ];
 
 // Helper function: Convert Google Drive sharing link to direct image URL
@@ -586,11 +593,149 @@ function initPhotoSwipe() {
 // Try to initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM Content Loaded');
+    // Initialize album gallery from local images
+    setTimeout(initAlbumGallery, 500);
     // Wait for dynamic content to load
     setTimeout(initPhotoSwipe, 2000);
     // Initialize mobile responsive scaling
     initMobileResponsive();
 });
+
+// ==========================================
+// ALBUM GALLERY - Load images from image/album folder
+// ==========================================
+function initAlbumGallery() {
+    const galleryWrapper = document.querySelector('.photo-gallery-wrapper');
+    if (!galleryWrapper) {
+        console.log('Gallery wrapper not found');
+        return;
+    }
+    
+    const albumUrls = getAlbumUrls();
+    if (albumUrls.length === 0) {
+        console.log('No album images found');
+        return;
+    }
+    
+    console.log('Initializing album gallery with', albumUrls.length, 'images');
+    
+    let currentIndex = 0;
+    
+    // Find or create main image container
+    const mainImageContainer = galleryWrapper.querySelector('.relative.flex-1');
+    if (!mainImageContainer) {
+        console.log('Main image container not found');
+        return;
+    }
+    
+    // Find or create thumbnails container
+    const thumbnailsScroller = galleryWrapper.querySelector('.flex.gap-2');
+    
+    // Update main image
+    function updateMainImage(index) {
+        const imageWrapper = mainImageContainer.querySelector('.absolute.inset-0');
+        if (imageWrapper) {
+            const img = imageWrapper.querySelector('img');
+            if (img) {
+                img.src = albumUrls[index];
+                img.alt = 'Photo ' + (index + 1);
+                img.style.imageRendering = 'auto';
+                img.style.objectFit = 'contain';
+                img.loading = 'eager';
+            }
+        }
+        
+        // Update thumbnail active state
+        if (thumbnailsScroller) {
+            const thumbnails = thumbnailsScroller.querySelectorAll('button');
+            thumbnails.forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('border-blue-500', 'shadow-lg', 'shadow-blue-500/30');
+                    thumb.classList.remove('border-transparent', 'hover:border-blue-400/60');
+                } else {
+                    thumb.classList.remove('border-blue-500', 'shadow-lg', 'shadow-blue-500/30');
+                    thumb.classList.add('border-transparent', 'hover:border-blue-400/60');
+                }
+            });
+        }
+        
+        currentIndex = index;
+    }
+    
+    // Create thumbnails HTML
+    if (thumbnailsScroller) {
+        thumbnailsScroller.innerHTML = '';
+        thumbnailsScroller.style.width = (albumUrls.length * 68) + 'px';
+        
+        albumUrls.forEach((url, index) => {
+            const button = document.createElement('button');
+            button.className = index === 0 
+                ? 'relative rounded-md border transition-all duration-200 overflow-hidden flex-shrink-0 cursor-pointer border-blue-500 shadow-lg shadow-blue-500/30'
+                : 'relative rounded-md border transition-all duration-200 overflow-hidden flex-shrink-0 cursor-pointer border-transparent hover:border-blue-400/60';
+            button.style.cssText = 'width: 64px; min-width: 64px; height: 64px;';
+            
+            const img = document.createElement('img');
+            img.alt = 'Photo ' + (index + 1);
+            img.loading = 'eager';
+            img.decoding = 'sync';
+            img.className = 'object-cover';
+            img.src = url;
+            img.style.cssText = 'position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; object-fit: cover;';
+            
+            button.appendChild(img);
+            
+            // Click handler
+            button.addEventListener('click', function() {
+                updateMainImage(index);
+            });
+            
+            thumbnailsScroller.appendChild(button);
+        });
+    }
+    
+    // Update first main image
+    updateMainImage(0);
+    
+    // Add navigation button handlers
+    const prevBtn = mainImageContainer.querySelector('button:first-of-type');
+    const nextBtn = mainImageContainer.querySelector('button:nth-of-type(2)');
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const newIndex = currentIndex > 0 ? currentIndex - 1 : albumUrls.length - 1;
+            updateMainImage(newIndex);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const newIndex = currentIndex < albumUrls.length - 1 ? currentIndex + 1 : 0;
+            updateMainImage(newIndex);
+        });
+    }
+    
+    // Auto-slide every 4 seconds
+    let autoSlideInterval = setInterval(function() {
+        const newIndex = currentIndex < albumUrls.length - 1 ? currentIndex + 1 : 0;
+        updateMainImage(newIndex);
+    }, 4000);
+    
+    // Pause on hover
+    galleryWrapper.addEventListener('mouseenter', function() {
+        clearInterval(autoSlideInterval);
+    });
+    
+    galleryWrapper.addEventListener('mouseleave', function() {
+        autoSlideInterval = setInterval(function() {
+            const newIndex = currentIndex < albumUrls.length - 1 ? currentIndex + 1 : 0;
+            updateMainImage(newIndex);
+        }, 4000);
+    });
+    
+    console.log('Album gallery initialized successfully!');
+}
 
 // Also try when everything is fully loaded
 window.addEventListener('load', function () {
@@ -947,8 +1092,7 @@ function initMusic() {
     if (musicInitialized) return;
     
     const audio = document.getElementById('bg-music');
-    const musicIcon = document.querySelector('.music-icon');
-    const audioToggle = document.querySelector('.audio-toggle');
+    const musicToggle = document.getElementById('music-toggle');
     
     if (!audio) {
         console.log('Audio element not found');
@@ -964,7 +1108,7 @@ function initMusic() {
     function playMusic() {
         audio.play().then(() => {
             musicPlaying = true;
-            if (audioToggle) audioToggle.classList.add('playing');
+            if (musicToggle) musicToggle.classList.add('playing');
             console.log('Music playing');
         }).catch(err => {
             console.log('Music play error:', err);
@@ -975,12 +1119,13 @@ function initMusic() {
     function pauseMusic() {
         audio.pause();
         musicPlaying = false;
-        if (audioToggle) audioToggle.classList.remove('playing');
+        if (musicToggle) musicToggle.classList.remove('playing');
         console.log('Music paused');
     }
     
     // Function to toggle music
     function toggleMusic() {
+        console.log('Toggle music called, currently playing:', musicPlaying);
         if (musicPlaying) {
             pauseMusic();
         } else {
@@ -993,9 +1138,9 @@ function initMusic() {
     document.addEventListener('click', function(e) {
         if (firstClickHandled) return;
         
-        // Don't trigger on music icon (it has its own handler)
+        // Don't trigger on music toggle button (it has its own handler)
         const target = e.target;
-        if (target && target.closest && (target.closest('.audio-toggle') || target.closest('.music-icon'))) {
+        if (target && target.closest && target.closest('#music-toggle')) {
             return;
         }
         
@@ -1005,23 +1150,15 @@ function initMusic() {
         // Don't stop propagation - let the original click event continue
     }, false);
     
-    // Music icon click toggles music
-    if (musicIcon) {
-        musicIcon.addEventListener('click', function(e) {
+    // Music toggle button click
+    if (musicToggle) {
+        musicToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             firstClickHandled = true; // Mark as handled
             toggleMusic();
         });
-    }
-    
-    if (audioToggle) {
-        audioToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            firstClickHandled = true; // Mark as handled
-            toggleMusic();
-        });
+        console.log('Music toggle button handler added');
     }
     
     console.log('Music controller initialized!');
@@ -1228,62 +1365,161 @@ function initToolbar() {
     
     toolbarInitialized = true;
     
-    // Directions button - open Google Maps
-    btnDirections.addEventListener('click', function(e) {
+    // Directions button - show popup with both house addresses
+    btnDirections.addEventListener('click', async function(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        // Get directions link from wedding data
-        let mapsUrl = 'https://maps.google.com';
-        
-        if (weddingData && weddingData.hon_le && weddingData.hon_le.link_chi_duong) {
-            mapsUrl = weddingData.hon_le.link_chi_duong;
+        // Load addresses from data.json
+        let groomInfo, brideInfo;
+        try {
+            const response = await fetch('data.json');
+            const data = await response.json();
+            
+            // Get groom house info (chu_re)
+            groomInfo = {
+                ten_nha: data.chu_re?.ten_nha || 'Nhà Trai',
+                dia_diem: data.chu_re?.hon_le?.dia_diem || '',
+                dia_chi: data.chu_re?.hon_le?.dia_chi || '',
+                ngay_cuoi: data.chu_re?.hon_le?.ngay_cuoi || '',
+                gio_cuoi: data.chu_re?.hon_le?.gio_cuoi || '',
+                link_chi_duong: data.chu_re?.hon_le?.link_chi_duong || 'https://maps.google.com'
+            };
+            
+            // Get bride house info (co_dau)
+            brideInfo = {
+                ten_nha: data.co_dau?.ten_nha || 'Nhà Gái',
+                dia_diem: data.co_dau?.hon_le?.dia_diem || '',
+                dia_chi: data.co_dau?.hon_le?.dia_chi || '',
+                ngay_cuoi: data.co_dau?.hon_le?.ngay_cuoi || '',
+                gio_cuoi: data.co_dau?.hon_le?.gio_cuoi || '',
+                link_chi_duong: data.co_dau?.hon_le?.link_chi_duong || 'https://maps.google.com'
+            };
+            
+            console.log('Loaded address info from data.json:', { groomInfo, brideInfo });
+        } catch (error) {
+            console.error('Error loading address info from data.json:', error);
+            // Fallback defaults
+            groomInfo = { ten_nha: 'Nhà Trai', dia_diem: '', dia_chi: '', ngay_cuoi: '', gio_cuoi: '', link_chi_duong: 'https://maps.google.com' };
+            brideInfo = { ten_nha: 'Nhà Gái', dia_diem: '', dia_chi: '', ngay_cuoi: '', gio_cuoi: '', link_chi_duong: 'https://maps.google.com' };
         }
         
-        // Open in new tab/app
-        window.open(mapsUrl, '_blank');
-        console.log('Opening directions:', mapsUrl);
+        // Check if SweetAlert2 is loaded
+        if (typeof Swal === 'undefined') {
+            console.log('SweetAlert2 not loaded');
+            return;
+        }
+        
+        Swal.fire({
+            title: '📍 Địa Điểm Tiệc Cưới 📍',
+            html: `
+                <div style="text-align: center;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+                        <!-- Nhà Trai -->
+                        <div style="flex: 1; min-width: 280px; max-width: 350px;">
+                            <h3 style="color: #2563eb; margin-bottom: 10px; font-size: 18px;">🏠 ${groomInfo.ten_nha}</h3>
+                            <div style="background: #eff6ff; padding: 15px; border-radius: 8px; text-align: left;">
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>📅 Ngày:</strong> ${groomInfo.ngay_cuoi}</p>
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>🕐 Giờ:</strong> ${groomInfo.gio_cuoi}</p>
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>🏛️ Địa điểm:</strong> ${groomInfo.dia_diem}</p>
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>📍 Địa chỉ:</strong> ${groomInfo.dia_chi}</p>
+                            </div>
+                            <button onclick="window.open('${groomInfo.link_chi_duong}', '_blank')" 
+                                style="margin-top: 10px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; width: 100%;">
+                                🗺️ Chỉ Đường Nhà Trai
+                            </button>
+                        </div>
+                        <!-- Nhà Gái -->
+                        <div style="flex: 1; min-width: 280px; max-width: 350px;">
+                            <h3 style="color: #db2777; margin-bottom: 10px; font-size: 18px;">🏠 ${brideInfo.ten_nha}</h3>
+                            <div style="background: #fdf2f8; padding: 15px; border-radius: 8px; text-align: left;">
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>📅 Ngày:</strong> ${brideInfo.ngay_cuoi}</p>
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>🕐 Giờ:</strong> ${brideInfo.gio_cuoi}</p>
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>🏛️ Địa điểm:</strong> ${brideInfo.dia_diem}</p>
+                                <p style="margin: 6px 0; font-size: 14px;"><strong>📍 Địa chỉ:</strong> ${brideInfo.dia_chi}</p>
+                            </div>
+                            <button onclick="window.open('${brideInfo.link_chi_duong}', '_blank')" 
+                                style="margin-top: 10px; padding: 10px 20px; background: #db2777; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; width: 100%;">
+                                🗺️ Chỉ Đường Nhà Gái
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `,
+            showCloseButton: true,
+            showConfirmButton: false,
+            width: '750px',
+            padding: '20px',
+            background: '#fff',
+            customClass: {
+                popup: 'directions-popup'
+            }
+        });
+        
+        console.log('Directions popup shown with data from data.json!');
     });
     
-    // Also add directions click to element with data-node-id="MXcj3JAluy"
+    // Also add directions click to element with data-node-id="MXcj3JAluy" - trigger the same popup
     const chiDuongElement = document.querySelector('[data-node-id="MXcj3JAluy"]');
     if (chiDuongElement) {
         chiDuongElement.style.cursor = 'pointer';
         chiDuongElement.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
-            let mapsUrl = 'https://maps.google.com';
-            if (weddingData && weddingData.hon_le && weddingData.hon_le.link_chi_duong) {
-                mapsUrl = weddingData.hon_le.link_chi_duong;
-            }
-            
-            window.open(mapsUrl, '_blank');
-            console.log('Opening directions from chi duong element:', mapsUrl);
+            // Trigger the directions button click
+            btnDirections.click();
         });
         console.log('Chi duong element click handler added');
     }
     
-    // Gift button - show QR code popup
-    btnGift.addEventListener('click', function(e) {
+    // Gift button - show QR code popup with both bride and groom
+    btnGift.addEventListener('click', async function(e) {
         e.preventDefault();
         e.stopPropagation();
         
         // Trigger firework effect
         triggerFireworks();
         
-        const BANK_INFO = getCurrentBankInfo() || {
-            BANK_ID: 'VPB',
-            BANK_NAME: 'VPBank',
-            ACCOUNT_NO: '99015012001',
-            ACCOUNT_NAME: 'LE QUANG DAI',
-            DESCRIPTION: 'Chuc mung hanh phuc'
-        };
+        // Load bank info from data.json
+        let groomBank, brideBank;
+        try {
+            const response = await fetch('data.json');
+            const data = await response.json();
+            
+            // Get groom bank info (chu_re)
+            groomBank = {
+                BANK_ID: data.chu_re?.ngan_hang?.bank_id || 'TCB',
+                BANK_NAME: data.chu_re?.ngan_hang?.bank_name || 'Techcombank',
+                ACCOUNT_NO: data.chu_re?.ngan_hang?.account_no || '',
+                ACCOUNT_NAME: data.chu_re?.ngan_hang?.account_name || '',
+                DESCRIPTION: data.chu_re?.ngan_hang?.description || 'Chuc mung hanh phuc'
+            };
+            
+            // Get bride bank info (co_dau)
+            brideBank = {
+                BANK_ID: data.co_dau?.ngan_hang?.bank_id || 'SHB',
+                BANK_NAME: data.co_dau?.ngan_hang?.bank_name || 'SHB',
+                ACCOUNT_NO: data.co_dau?.ngan_hang?.account_no || '',
+                ACCOUNT_NAME: data.co_dau?.ngan_hang?.account_name || '',
+                DESCRIPTION: data.co_dau?.ngan_hang?.description || 'Chuc mung hanh phuc'
+            };
+            
+            console.log('Loaded bank info from data.json:', { groomBank, brideBank });
+        } catch (error) {
+            console.error('Error loading bank info from data.json:', error);
+            // Fallback defaults
+            groomBank = { BANK_ID: 'TCB', BANK_NAME: 'Techcombank', ACCOUNT_NO: '', ACCOUNT_NAME: '', DESCRIPTION: 'Chuc mung hanh phuc' };
+            brideBank = { BANK_ID: 'SHB', BANK_NAME: 'SHB', ACCOUNT_NO: '', ACCOUNT_NAME: '', DESCRIPTION: 'Chuc mung hanh phuc' };
+        }
         
-        // Build QR URL
-        let qrUrl = `https://img.vietqr.io/image/${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-compact2.png`;
-        qrUrl += `?addInfo=${encodeURIComponent(BANK_INFO.DESCRIPTION || 'Mung cuoi')}`;
-        qrUrl += `&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
+        // Build QR URLs
+        let groomQrUrl = `https://img.vietqr.io/image/${groomBank.BANK_ID}-${groomBank.ACCOUNT_NO}-compact2.png`;
+        groomQrUrl += `?addInfo=${encodeURIComponent(groomBank.DESCRIPTION)}`;
+        groomQrUrl += `&accountName=${encodeURIComponent(groomBank.ACCOUNT_NAME)}`;
+        
+        let brideQrUrl = `https://img.vietqr.io/image/${brideBank.BANK_ID}-${brideBank.ACCOUNT_NO}-compact2.png`;
+        brideQrUrl += `?addInfo=${encodeURIComponent(brideBank.DESCRIPTION)}`;
+        brideQrUrl += `&accountName=${encodeURIComponent(brideBank.ACCOUNT_NAME)}`;
         
         // Check if SweetAlert2 is loaded
         if (typeof Swal === 'undefined') {
@@ -1295,18 +1531,34 @@ function initToolbar() {
             title: '💝 Gửi Quà Mừng Cưới 💝',
             html: `
                 <div style="text-align: center;">
-                    <img src="${qrUrl}" alt="VietQR" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px;">
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left;">
-                        <p style="margin: 5px 0;"><strong>Ngân hàng:</strong> ${BANK_INFO.BANK_NAME || BANK_INFO.BANK_ID}</p>
-                        <p style="margin: 5px 0;"><strong>Số TK:</strong> ${BANK_INFO.ACCOUNT_NO}</p>
-                        <p style="margin: 5px 0;"><strong>Chủ TK:</strong> ${BANK_INFO.ACCOUNT_NAME}</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+                        <!-- Chú rể -->
+                        <div style="flex: 1; min-width: 280px; max-width: 350px;">
+                            <h3 style="color: #2563eb; margin-bottom: 10px; font-size: 18px;">🤵 Chú Rể</h3>
+                            <img src="${groomQrUrl}" alt="QR Chú Rể" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px;">
+                            <div style="background: #eff6ff; padding: 12px; border-radius: 8px; text-align: left;">
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Ngân hàng:</strong> ${groomBank.BANK_NAME}</p>
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Số TK:</strong> ${groomBank.ACCOUNT_NO}</p>
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Chủ TK:</strong> ${groomBank.ACCOUNT_NAME}</p>
+                            </div>
+                        </div>
+                        <!-- Cô dâu -->
+                        <div style="flex: 1; min-width: 280px; max-width: 350px;">
+                            <h3 style="color: #db2777; margin-bottom: 10px; font-size: 18px;">👰 Cô Dâu</h3>
+                            <img src="${brideQrUrl}" alt="QR Cô Dâu" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px;">
+                            <div style="background: #fdf2f8; padding: 12px; border-radius: 8px; text-align: left;">
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Ngân hàng:</strong> ${brideBank.BANK_NAME}</p>
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Số TK:</strong> ${brideBank.ACCOUNT_NO}</p>
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Chủ TK:</strong> ${brideBank.ACCOUNT_NAME}</p>
+                            </div>
+                        </div>
                     </div>
                     <p style="margin-top: 15px; color: #666; font-size: 14px;">Quét mã QR để chuyển khoản 💕</p>
                 </div>
             `,
             showCloseButton: true,
             showConfirmButton: false,
-            width: 'auto',
+            width: '750px',
             padding: '20px',
             background: '#fff',
             customClass: {
@@ -1314,7 +1566,7 @@ function initToolbar() {
             }
         });
         
-        console.log('Gift QR popup shown with fireworks!');
+        console.log('Gift QR popup shown with data from data.json!');
     });
     
     console.log('Toolbar initialized!');
@@ -1670,4 +1922,76 @@ window.addEventListener('load', function() {
     setTimeout(initRSVPForm, 2000);
     // Khởi tạo popup sau khi load xong
     initRSVPPopup();
+});
+
+// ==========================================
+// GIFT SECTION - Dynamic QR Code from data.json
+// ==========================================
+
+async function initGiftSection() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        
+        // Get groom bank info (chu_re)
+        const groomBank = {
+            name: data.chu_re?.ho_ten_chu_re || 'Chú rể',
+            bank_name: data.chu_re?.ngan_hang?.bank_name || '',
+            bank_id: data.chu_re?.ngan_hang?.bank_id || '',
+            account_no: data.chu_re?.ngan_hang?.account_no || '',
+            account_name: data.chu_re?.ngan_hang?.account_name || ''
+        };
+        
+        // Get bride bank info (co_dau)
+        const brideBank = {
+            name: data.co_dau?.ho_ten_co_dau || 'Cô dâu',
+            bank_name: data.co_dau?.ngan_hang?.bank_name || '',
+            bank_id: data.co_dau?.ngan_hang?.bank_id || '',
+            account_no: data.co_dau?.ngan_hang?.account_no || '',
+            account_name: data.co_dau?.ngan_hang?.account_name || ''
+        };
+        
+        // Build QR URLs
+        const groomQrUrl = `https://img.vietqr.io/image/${groomBank.bank_id}-${groomBank.account_no}-compact2.png`;
+        const brideQrUrl = `https://img.vietqr.io/image/${brideBank.bank_id}-${brideBank.account_no}-compact2.png`;
+        
+        // Update Bride section (Cô dâu) - lines around 2136-2200
+        // Name element: data-node-id="iPjImtIlr4"
+        const brideNameEl = document.querySelector('[data-node-id="iPjImtIlr4"] div[contenteditable]');
+        if (brideNameEl) brideNameEl.textContent = brideBank.account_name || brideBank.name;
+        
+        // Bank info element: data-node-id="t0Ya66JrSt"
+        const brideBankEl = document.querySelector('[data-node-id="t0Ya66JrSt"] div[contenteditable]');
+        if (brideBankEl) brideBankEl.textContent = `${brideBank.bank_name} : ${brideBank.account_no}`;
+        
+        // QR code placeholder: data-node-id="yWe4uNa8eC"
+        const brideQrEl = document.querySelector('[data-node-id="yWe4uNa8eC"] .svg-wrap');
+        if (brideQrEl) {
+            brideQrEl.innerHTML = `<img src="${brideQrUrl}" alt="QR Cô Dâu" style="width: 100%; height: 100%; border-radius: 8px; object-fit: contain;">`;
+        }
+        
+        // Update Groom section (Chú rể) - lines around 2356-2420
+        // Name element: data-node-id="vbVsmkFNC_"
+        const groomNameEl = document.querySelector('[data-node-id="vbVsmkFNC_"] div[contenteditable]');
+        if (groomNameEl) groomNameEl.textContent = groomBank.account_name || groomBank.name;
+        
+        // Bank info element: data-node-id="D5MLJCGR1T"
+        const groomBankEl = document.querySelector('[data-node-id="D5MLJCGR1T"] div[contenteditable]');
+        if (groomBankEl) groomBankEl.textContent = `${groomBank.bank_name} : ${groomBank.account_no}`;
+        
+        // QR code placeholder: data-node-id="zLOlfhyqjD"
+        const groomQrEl = document.querySelector('[data-node-id="zLOlfhyqjD"] .svg-wrap');
+        if (groomQrEl) {
+            groomQrEl.innerHTML = `<img src="${groomQrUrl}" alt="QR Chú Rể" style="width: 100%; height: 100%; border-radius: 8px; object-fit: contain;">`;
+        }
+        
+        console.log('Gift section updated with data from data.json!', { groomBank, brideBank });
+    } catch (error) {
+        console.error('Error loading gift section data:', error);
+    }
+}
+
+// Initialize gift section when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initGiftSection, 1500);
 });

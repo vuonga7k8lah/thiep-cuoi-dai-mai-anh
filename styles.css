@@ -851,13 +851,19 @@
         }
 
         .photo-component.jsx-1944329802 .photo-bg-wrap.jsx-1944329802 {
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-clip: border-box;
-        }
+                width: 100%;
+                height: 100%;
+                
+                /* 1. Giữ ảnh lấp đầy khung nhưng không bị méo */
+                background-size: cover; 
+                background-position: 50% 50%; 
+                
+                background-repeat: no-repeat;
+                
+                /* 3. Mẹo giúp ảnh hiển thị mượt và nét hơn trên trình duyệt */
+                -webkit-font-smoothing: antialiased;
+                image-rendering: -webkit-optimize-contrast; /* Giúp tăng tương phản nhẹ */
+            }
   
         .material-component.jsx-3557960200 {
             width: 100%;
@@ -8000,6 +8006,9 @@ a, button, [role="button"], .cursor-pointer {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     pointer-events: auto !important;
+    image-rendering: auto;
+    image-rendering: -webkit-optimize-contrast;
+    -ms-interpolation-mode: bicubic;
 }
 
 .photo-gallery-wrapper .image-gallery-thumbnail {
@@ -8142,6 +8151,7 @@ a, button, [role="button"], .cursor-pointer {
 
 .audio-toggle.playing {
     opacity: 1;
+    animation: rotate-music 3s linear infinite;
 }
 
 .audio-toggle:not(.playing) .music-icon {
@@ -8174,6 +8184,15 @@ a, button, [role="button"], .cursor-pointer {
 
 .audio-toggle.playing::after {
     opacity: 0;
+}
+
+/* Music toggle button specific styles */
+#music-toggle.playing {
+    animation: rotate-music 3s linear infinite;
+}
+
+#music-toggle:not(.playing) {
+    animation: none;
 }
 
 /* ========================================
@@ -8416,11 +8435,11 @@ a, button, [role="button"], .cursor-pointer {
 /* Nút chỉ đường nhà gái */
 [data-node-id="ujS95UZ_yB"][style*="top: 2066.82px"],
 [data-node-id="8A6z2O4ZXB"][style*="top: 2072.82px"] {
-    top: calc(1380px + var(--section-gap)) !important;
+    top: calc(1350px + var(--section-gap)) !important;
 }
 
 [data-node-id="8A6z2O4ZXB"][style*="top: 2072.82px"] {
-    top: 1386px !important;
+    top: 1388px !important;
 }
 
 /* LỄ THÀNH HÔN - Đẩy lên */
@@ -8525,7 +8544,7 @@ a, button, [role="button"], .cursor-pointer {
 }
 
 [data-node-id="IZgw7JIB0d"][style*="top: 3086.74px"] {
-    top: 4734px !important;
+    top: 4758px !important;
 }
 
 [data-node-id="5EGz2EhA_a"][style*="top: 3165.6px"] {
@@ -8832,6 +8851,7 @@ a, button, [role="button"], .cursor-pointer {
 
 [data-node-id="pZ80uzN0qd"][style*="top: 8210.4px"] {
     top: 6030px !important;
+    padding-bottom: 10px !important;
 }
 
 /* ===========================================
@@ -8862,6 +8882,9 @@ a, button, [role="button"], .cursor-pointer {
         left: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
     }
     
     /* Override inline style width */
@@ -8872,6 +8895,7 @@ a, button, [role="button"], .cursor-pointer {
     #root-page-container > div {
         width: 100vw !important;
         overflow: hidden !important;
+        height: auto !important;
     }
     
     /* Scale the innermost content wrapper */
@@ -8880,6 +8904,14 @@ a, button, [role="button"], .cursor-pointer {
         transform-origin: top center;
         width: 500px;
         margin-left: calc((100vw - 500px * (100vw / 500)) / 2);
+    }
+    
+    /* Limit container height to match scaled content (8350px * scale factor) */
+    #root-page-container,
+    #root-page-container > div {
+        /* Scale height: 8350px * (screenWidth / 500px) */
+        height: calc(8350px * (100vw / 500px)) !important;
+        overflow: hidden !important;
     }
     
     /* All absolute positioned children scale properly */
@@ -8929,7 +8961,24 @@ a, button, [role="button"], .cursor-pointer {
     
     .photo-gallery-wrapper img {
         object-fit: contain !important;
+        image-rendering: auto !important;
+        image-rendering: -webkit-optimize-contrast !important;
     }
+}
+
+/* High quality album images */
+.photo-gallery-wrapper img {
+    image-rendering: auto;
+    image-rendering: -webkit-optimize-contrast;
+    -ms-interpolation-mode: bicubic;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.photo-gallery-wrapper .absolute.inset-0 img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 /* Gift section responsive */
