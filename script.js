@@ -1037,13 +1037,26 @@ function initEnvelope() {
         // Toggle between open and close
         const isOpen = envelopeContainer.classList.contains('open');
         
+        // Get invitation greeting element
+        const invitationGreeting = document.getElementById('invitation-greeting');
+        
         if (isOpen) {
             envelopeContainer.classList.remove('open');
             envelopeContainer.classList.add('close');
+            // Hide invitation greeting
+            if (invitationGreeting) {
+                invitationGreeting.style.opacity = '0';
+            }
             console.log('Envelope closed. Classes:', envelopeContainer.className);
         } else {
             envelopeContainer.classList.remove('close');
             envelopeContainer.classList.add('open');
+            // Show invitation greeting with animation
+            if (invitationGreeting) {
+                setTimeout(function() {
+                    invitationGreeting.style.opacity = '1';
+                }, 500);
+            }
             console.log('Envelope opened. Classes:', envelopeContainer.className);
         }
     }
