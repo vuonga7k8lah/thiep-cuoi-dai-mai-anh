@@ -8783,75 +8783,72 @@ a, button, [role="button"], .cursor-pointer {
 }
 
 /* ===========================================
-   SECTION: Gửi Quà Mừng (~7368px-8000px)
-   Offset: ~2393px
+   SECTION: Gửi Quà Mừng
+   Now controlled by wrapper .gift-section position
+   Child elements use position relative to wrapper
    =========================================== */
-[data-node-id="bWTuaRnoUo"][style*="top: 7368.44px"] {
-    top: 5485px !important;
+
+/* Gift section wrapper offset = 5340px */
+/* Recalculate children positions: actual_top - wrapper_offset */
+
+.gift-section [data-node-id="EsRWJCC0XR"] {
+    top: 2218px !important; /* 7720.94 - 5340 */
 }
 
-[data-node-id="EsRWJCC0XR"][style*="top: 7520.94px"] {
-    top: 5340px !important;
+.gift-section [data-node-id="poJwImDDnk"] {
+    top: 2276.8px !important; /* 7616.8 - 5340 */
 }
 
-[data-node-id="poJwImDDnk"][style*="top: 7616.8px"] {
-    top: 5436px !important;
+.gift-section [data-node-id="BuirAho-zo"] {
+    top: 2279.06px !important; /* 7619.06 - 5340 */
 }
 
-[data-node-id="BuirAho-zo"][style*="top: 7619.06px"] {
-    top: 5439px !important;
+.gift-section [data-node-id="dT_KqdvFkj"] {
+    top: 2281.93px !important; /* 7621.93 - 5340 */
 }
 
-[data-node-id="dT_KqdvFkj"][style*="top: 7621.93px"] {
-    top: 5442px !important;
+.gift-section [data-node-id="yWe4uNa8eC"] {
+    top: 2295.45px !important; /* 7635.45 - 5340 */
 }
 
-[data-node-id="yWe4uNa8eC"][style*="top: 7635.45px"] {
-    top: 5455px !important;
+.gift-section [data-node-id="TcR5JELvVK"],
+.gift-section [data-node-id="hYiOVkWJ-6"] {
+    top: 2302.11px !important; /* 7642.11 - 5340 */
 }
 
-[data-node-id="TcR5JELvVK"][style*="top: 7642.11px"],
-[data-node-id="hYiOVkWJ-6"][style*="top: 7642.11px"] {
-    top: 5462px !important;
+.gift-section [data-node-id="iPjImtIlr4"] {
+    top: 2338.5px !important; /* 7678.5 - 5340 */
 }
 
-[data-node-id="iPjImtIlr4"][style*="top: 7678.5px"] {
-    top: 5498px !important;
+.gift-section [data-node-id="t0Ya66JrSt"] {
+    top: 2371.87px !important; /* 7711.87 - 5340 */
 }
 
-[data-node-id="t0Ya66JrSt"][style*="top: 7711.87px"] {
-    top: 5531px !important;
+.gift-section [data-node-id="F3DYroHViD"] {
+    top: 2517.21px !important; /* 7857.21 - 5340 */
 }
 
-/* Groom gift section */
-[data-node-id="F3DYroHViD"][style*="top: 7857.21px"] {
-    top: 5677px !important;
+.gift-section [data-node-id="6RGJcFAx2z"] {
+    top: 2519.33px !important; /* 7859.33 - 5340 */
 }
 
-[data-node-id="6RGJcFAx2z"][style*="top: 7859.33px"] {
-    top: 5679px !important;
+.gift-section [data-node-id="orOPfQQNM2"] {
+    top: 2522.37px !important; /* 7862.37 - 5340 */
 }
 
-[data-node-id="orOPfQQNM2"][style*="top: 7862.37px"] {
-    top: 5682px !important;
+.gift-section [data-node-id="cgHAfHvqvH"],
+.gift-section [data-node-id="zLOlfhyqjD"] {
+    top: 2542.9px !important; /* 7882.9 - 5340 */
 }
 
-[data-node-id="cgHAfHvqvH"][style*="top: 7882.9px"],
-[data-node-id="zLOlfhyqjD"][style*="top: 7882.9px"] {
-    top: 5703px !important;
+.gift-section [data-node-id="vbVsmkFNC_"] {
+    top: 2576.19px !important; /* 7916.19 - 5340 */
 }
 
-[data-node-id="ePYKLOWK3M"][style*="top: 7889.61px"] {
-    top: 5709px !important;
+.gift-section [data-node-id="D5MLJCGR1T"] {
+    top: 2610.5px !important; /* 7950.5 - 5340 */
 }
 
-[data-node-id="vbVsmkFNC_"][style*="top: 7916.19px"] {
-    top: 5736px !important;
-}
-
-[data-node-id="D5MLJCGR1T"][style*="top: 7950.5px"] {
-    top: 5770px !important;
-}
 
 /* ===========================================
    SECTION: Thank You (~8077px-8310px)
@@ -8864,6 +8861,28 @@ a, button, [role="button"], .cursor-pointer {
 [data-node-id="pZ80uzN0qd"][style*="top: 8210.4px"] {
     top: 6030px !important;
     padding-bottom: 10px !important;
+}
+
+/* Thank you section - Now controlled by wrapper .thank-you-section position */
+/* Child elements use position relative to wrapper */
+
+/* Thank you section wrapper offset = 6200px */
+/* Recalculate children positions: actual_top - wrapper_offset */
+
+.thank-you-section [data-node-id="Bj3xy15iG0"] {
+    top: -2526px !important; /* 3674 - 6200 */
+}
+
+.thank-you-section [data-node-id="9RKpi-XNby"] {
+    top: -2268px !important; /* 3932 - 6200 */
+}
+
+.thank-you-section [data-node-id="WGyDHP4zw6"] {
+    top: -2255px !important; /* 3945 - 6200 */
+}
+
+.thank-you-section [data-node-id="A6QxJPTbf6"] {
+    top: 97px !important; /* 6297 - 6200 */
 }
 
 /* ===========================================

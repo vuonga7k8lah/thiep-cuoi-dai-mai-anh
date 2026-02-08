@@ -1294,12 +1294,187 @@ function initQRPopup() {
 // Initialize QR popup when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initQRPopup, 1000);
+    setTimeout(initGiftCardQRPopup, 1000);
+    setTimeout(initMapNavigationButton, 1000);
 });
 
 // Also try on window load
 window.addEventListener('load', function() {
     setTimeout(initQRPopup, 800);
+    setTimeout(initGiftCardQRPopup, 800);
+    setTimeout(initMapNavigationButton, 800);
 });
+
+// ==========================================
+// GIFT CARD QR CODE POPUP
+// ==========================================
+function initGiftCardQRPopup() {
+    console.log('Initializing Gift Card QR Popup...');
+    
+    // QR Code information for Bride and Groom
+    const QR_INFO = {
+        bride: {
+            title: '🌸 Mừng Cưới Cô Dâu 🌸',
+            name: 'PHẠM THỊ HẠNH',
+            bankId: 'SHB',
+            bankName: 'SHB - Ngân hàng TMCP Sài Gòn - Hà Nội',
+            accountNo: '0965479256',
+            qrUrl: 'https://img.vietqr.io/image/SHB-0965479256-compact2.png?accountName=PHAM%20THI%20HANH&addInfo=Mung%20cuoi%20co%20dau'
+        },
+        groom: {
+            title: '🤵 Mừng Cưới Chú Rể 🤵',
+            name: 'LÊ HÙNG VƯƠNG',
+            bankId: 'TCB',
+            bankName: 'Techcombank',
+            accountNo: '19072779357017',
+            qrUrl: 'https://img.vietqr.io/image/TCB-19072779357017-compact2.png?accountName=LE%20HUNG%20VUONG&addInfo=Mung%20cuoi%20chu%20re'
+        }
+    };
+    
+    // Add click handler to Bride QR code (svg-yWe4uNa8eC)
+    const brideQR = document.getElementById('svg-yWe4uNa8eC');
+    if (brideQR) {
+        brideQR.style.cursor = 'pointer';
+        brideQR.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showQRPopup(QR_INFO.bride);
+        });
+        console.log('✅ Bride QR code click handler added');
+    }
+    
+    // Add click handler to Bride QR code box (svg-dT_KqdvFkj)
+    const brideQRBox = document.getElementById('svg-dT_KqdvFkj');
+    if (brideQRBox) {
+        brideQRBox.style.cursor = 'pointer';
+        brideQRBox.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showQRPopup(QR_INFO.bride);
+        });
+        console.log('✅ Bride QR box click handler added');
+    }
+    
+    // Add click handler to Groom QR code (svg-orOPfQQNM2)
+    const groomQR = document.getElementById('svg-orOPfQQNM2');
+    if (groomQR) {
+        groomQR.style.cursor = 'pointer';
+        groomQR.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showQRPopup(QR_INFO.groom);
+        });
+        console.log('✅ Groom QR code click handler added');
+    }
+    
+    function showQRPopup(info) {
+        // Check if SweetAlert2 is loaded
+        if (typeof Swal === 'undefined') {
+            console.log('SweetAlert2 not loaded');
+            alert(`${info.name}\n${info.bankName}\nSố TK: ${info.accountNo}`);
+            return;
+        }
+        
+        // Save current scroll position
+        const scrollY = window.scrollY || window.pageYOffset;
+        
+        Swal.fire({
+            title: info.title,
+            html: `
+                <div style="text-align: center;">
+                    <img src="${info.qrUrl}" alt="VietQR" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left; margin-bottom: 10px;">
+                        <p style="margin: 8px 0;"><strong style="color: #d4617c;">💳 Ngân hàng:</strong> ${info.bankName}</p>
+                        <p style="margin: 8px 0;"><strong style="color: #d4617c;">📱 Số TK:</strong> ${info.accountNo}</p>
+                        <p style="margin: 8px 0;"><strong style="color: #d4617c;">👤 Chủ TK:</strong> ${info.name}</p>
+                    </div>
+                    <p style="margin-top: 15px; color: #666; font-size: 14px; font-style: italic;">Quét mã QR để chuyển khoản 💕</p>
+                </div>
+            `,
+            showCloseButton: true,
+            showConfirmButton: false,
+            width: '400px',
+            padding: '20px',
+            background: '#fff',
+            customClass: {
+                popup: 'qr-popup gift-qr-popup'
+            },
+            scrollbarPadding: false,  // Prevent scrollbar padding manipulation
+            heightAuto: false,         // Prevent body height manipulation
+            willOpen: function() {
+                // Prevent body scroll manipulation
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            },
+            didOpen: function() {
+                // Keep scroll position when popup opens
+                setTimeout(() => window.scrollTo(0, scrollY), 0);
+            },
+            willClose: function() {
+                // Prepare to restore scroll
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            },
+            didClose: function() {
+                // Restore scroll position when popup closes
+                setTimeout(() => window.scrollTo(0, scrollY), 0);
+            }
+        });
+    }
+}
+
+// Initialize Google Maps navigation button
+function initMapNavigationButton() {
+    // Helper function to open Google Maps with fallback
+    function openGoogleMaps(mapLink, locationName) {
+        if (!mapLink) {
+            console.warn('⚠️ No map link found in data.json');
+            return;
+        }
+        
+        // Try to open in Google Maps app first (iOS/Android)
+        // If it fails, browser will fallback to web version automatically
+        console.log(`✅ Opening Google Maps for ${locationName}:`, mapLink);
+        window.open(mapLink, '_blank');
+    }
+    
+    // Groom's house button (Nhà Trai)
+    const groomMapButton = document.getElementById('svg-_YLQhYsBhW');
+    if (groomMapButton) {
+        groomMapButton.style.cursor = 'pointer';
+        groomMapButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // Get groom's location from weddingData
+            if (typeof weddingData !== 'undefined' && weddingData.chu_re && weddingData.chu_re.hon_le) {
+                const mapLink = weddingData.chu_re.hon_le.link_chi_duong;
+                openGoogleMaps(mapLink, 'Nhà Trai');
+            } else {
+                console.warn('⚠️ Wedding data not loaded');
+            }
+        });
+        console.log('✅ Groom map navigation button initialized');
+    } else {
+        console.warn('⚠️ Groom map button not found (svg-_YLQhYsBhW)');
+    }
+    
+    // Bride's house button (Nhà Gái)
+    const brideMapButton = document.getElementById('svg-ujS95UZ_yB');
+    if (brideMapButton) {
+        brideMapButton.style.cursor = 'pointer';
+        brideMapButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // Get bride's location from weddingData
+            if (typeof weddingData !== 'undefined' && weddingData.co_dau && weddingData.co_dau.hon_le) {
+                const mapLink = weddingData.co_dau.hon_le.link_chi_duong;
+                openGoogleMaps(mapLink, 'Nhà Gái');
+            } else {
+                console.warn('⚠️ Wedding data not loaded');
+            }
+        });
+        console.log('✅ Bride map navigation button initialized');
+    } else {
+        console.warn('⚠️ Bride map button not found (svg-ujS95UZ_yB)');
+    }
+}
 
 // ==========================================
 // FIREWORK EFFECT - Canvas Confetti
