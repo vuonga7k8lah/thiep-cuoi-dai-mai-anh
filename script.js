@@ -866,6 +866,70 @@ window.addEventListener('load', function() {
 });
 
 // ==========================================
+// DIRECTION BUTTONS - Navigate to venue location
+// ==========================================
+async function initDirectionButtons() {
+    try {
+        // Load both venue data
+        const response = await fetch('data.json');
+        const allData = await response.json();
+        
+        // Map direction buttons to their corresponding venue type
+        const buttonMapping = {
+            'oubOrReWeS': 'chu_re',  // Nhà Trai button
+            '8A6z2O4ZXB': 'co_dau'   // Nhà Gái button
+        };
+        
+        // Setup event listeners for each button
+        Object.keys(buttonMapping).forEach(function(buttonId) {
+            const button = document.querySelector('[data-node-id="' + buttonId + '"]');
+            const venueType = buttonMapping[buttonId];
+            
+            if (!button) {
+                console.log('Button not found:', buttonId);
+                return;
+            }
+            
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Get venue info for this specific button
+                const venueData = allData[venueType];
+                
+                if (!venueData || !venueData.hon_le || !venueData.hon_le.link_chi_duong) {
+                    console.error('Venue information not found for:', venueType);
+                    alert('Không tìm thấy thông tin chỉ đường');
+                    return;
+                }
+                
+                const venueInfo = venueData.hon_le;
+                
+                // Open Google Maps direction link in new tab
+                console.log('Opening direction for', venueType, ':', venueInfo.link_chi_duong);
+                window.open(venueInfo.link_chi_duong, '_blank');
+            });
+            
+            console.log('Direction button initialized:', buttonId, '->', venueType);
+        });
+        
+    } catch (error) {
+        console.error('Error initializing direction buttons:', error);
+    }
+}
+
+// Initialize direction buttons when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initDirectionButtons, 2000);
+});
+
+// Also try on window load
+window.addEventListener('load', function() {
+    setTimeout(initDirectionButtons, 1500);
+});
+
+
+// ==========================================
 // CAROUSEL AUTO-SLIDE - Change slides every 2 seconds
 // ==========================================
 let carouselInitialized = false; // Prevent double initialization
@@ -1270,7 +1334,26 @@ function initQRPopup() {
                         <img src="${qrUrl}" alt="VietQR" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px;">
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left;">
                             <p style="margin: 5px 0;"><strong>Ngân hàng:</strong> ${BANK_INFO.BANK_NAME}</p>
-                            <p style="margin: 5px 0;"><strong>Số TK:</strong> ${BANK_INFO.ACCOUNT_NO}</p>
+                            <p style="margin: 8px 0; display: flex; align-items: center; justify-content: space-between;">
+                                <span><strong>Số TK:</strong> ${BANK_INFO.ACCOUNT_NO}</span>
+                                <button id="copy-account-btn-toolbar" style="
+                                    background: #d4617c;
+                                    color: white;
+                                    border: none;
+                                    padding: 6px 12px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 5px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#c2516b'" onmouseout="this.style.background='#d4617c'">
+                                    <span>📋</span>
+                                    <span id="copy-text-toolbar">Copy</span>
+                                </button>
+                            </p>
                             <p style="margin: 5px 0;"><strong>Chủ TK:</strong> ${BANK_INFO.ACCOUNT_NAME}</p>
                         </div>
                         <p style="margin-top: 15px; color: #666; font-size: 14px;">Quét mã QR để chuyển khoản 💕</p>
@@ -1283,6 +1366,32 @@ function initQRPopup() {
                 background: '#fff',
                 customClass: {
                     popup: 'qr-popup'
+                },
+                didOpen: function() {
+                    // Add copy button event listener
+                    const copyBtn = document.getElementById('copy-account-btn-toolbar');
+                    const copyText = document.getElementById('copy-text-toolbar');
+                    
+                    if (copyBtn) {
+                        copyBtn.addEventListener('click', function() {
+                            // Copy account number to clipboard
+                            navigator.clipboard.writeText(BANK_INFO.ACCOUNT_NO).then(function() {
+                                // Success feedback
+                                copyText.textContent = '✓ Copied!';
+                                copyBtn.style.background = '#28a745';
+                                
+                                // Reset after 2 seconds
+                                setTimeout(function() {
+                                    copyText.textContent = 'Copy';
+                                    copyBtn.style.background = '#d4617c';
+                                }, 2000);
+                            }).catch(function(err) {
+                                // Fallback for older browsers
+                                console.error('Copy failed:', err);
+                                alert('Số tài khoản: ' + BANK_INFO.ACCOUNT_NO);
+                            });
+                        });
+                    }
                 }
             });
         });
@@ -1382,7 +1491,26 @@ function initGiftCardQRPopup() {
                     <img src="${info.qrUrl}" alt="VietQR" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left; margin-bottom: 10px;">
                         <p style="margin: 8px 0;"><strong style="color: #d4617c;">💳 Ngân hàng:</strong> ${info.bankName}</p>
-                        <p style="margin: 8px 0;"><strong style="color: #d4617c;">📱 Số TK:</strong> ${info.accountNo}</p>
+                        <p style="margin: 8px 0; display: flex; align-items: center; justify-content: space-between;">
+                            <span><strong style="color: #d4617c;">📱 Số TK:</strong> ${info.accountNo}</span>
+                            <button id="copy-account-btn" style="
+                                background: #d4617c;
+                                color: white;
+                                border: none;
+                                padding: 6px 12px;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                font-size: 12px;
+                                font-weight: 600;
+                                display: flex;
+                                align-items: center;
+                                gap: 5px;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.background='#c2516b'" onmouseout="this.style.background='#d4617c'">
+                                <span>📋</span>
+                                <span id="copy-text">Copy</span>
+                            </button>
+                        </p>
                         <p style="margin: 8px 0;"><strong style="color: #d4617c;">👤 Chủ TK:</strong> ${info.name}</p>
                     </div>
                     <p style="margin-top: 15px; color: #666; font-size: 14px; font-style: italic;">Quét mã QR để chuyển khoản 💕</p>
@@ -1406,6 +1534,31 @@ function initGiftCardQRPopup() {
             didOpen: function() {
                 // Keep scroll position when popup opens
                 setTimeout(() => window.scrollTo(0, scrollY), 0);
+                
+                // Add copy button event listener
+                const copyBtn = document.getElementById('copy-account-btn');
+                const copyText = document.getElementById('copy-text');
+                
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', function() {
+                        // Copy account number to clipboard
+                        navigator.clipboard.writeText(info.accountNo).then(function() {
+                            // Success feedback
+                            copyText.textContent = '✓ Copied!';
+                            copyBtn.style.background = '#28a745';
+                            
+                            // Reset after 2 seconds
+                            setTimeout(function() {
+                                copyText.textContent = 'Copy';
+                                copyBtn.style.background = '#d4617c';
+                            }, 2000);
+                        }).catch(function(err) {
+                            // Fallback for older browsers
+                            console.error('Copy failed:', err);
+                            alert('Số tài khoản: ' + info.accountNo);
+                        });
+                    });
+                }
             },
             willClose: function() {
                 // Prepare to restore scroll
@@ -2096,7 +2249,8 @@ function showRSVPPopup() {
 // Hiển thị popup sau 10 giây
 function initRSVPPopup() {
     setTimeout(function() {
-        showRSVPPopup();
+        //Hỏi có tham dự đám cưới không?
+        //showRSVPPopup();
     }, 15000); // 10 giây
 }
 

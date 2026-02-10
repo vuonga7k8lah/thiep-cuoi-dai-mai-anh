@@ -8552,7 +8552,7 @@ a, button, [role="button"], .cursor-pointer {
 }
 
 [data-node-id="ISIUPg2woZ"][style*="top: 3035.86px"] {
-    top: 4683px !important;
+    top: 4673px !important;
 }
 
 [data-node-id="IZgw7JIB0d"][style*="top: 3086.74px"] {
@@ -8968,7 +8968,7 @@ a, button, [role="button"], .cursor-pointer {
 @media screen and (max-width: 520px) {
     .floating-toolbar {
        right: 20px !important;
-        bottom: 90px !important;
+        bottom: 50% !important;
         gap: 8px !important;
         z-index: 99999 !important;
         position: fixed !important;
@@ -9199,4 +9199,78 @@ a, button, [role="button"], .cursor-pointer {
 [data-node-id="T_GUXbKvJQ"] div {
     position: relative !important;
     z-index: 200 !important;
+}
+
+/* ===========================================
+   Color Pulsing Animation for "Chỉ đường" text
+   =========================================== */
+@keyframes animation-color-pulse {
+    0% {
+        color: #FF6B6B;
+        text-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+    }
+    20% {
+        color: #FFD93D;
+        text-shadow: 0 0 10px rgba(255, 217, 61, 0.8);
+    }
+    40% {
+        color: #6BCF7F;
+        text-shadow: 0 0 10px rgba(107, 207, 127, 0.8);
+    }
+    60% {
+        color: #4ECDC4;
+        text-shadow: 0 0 10px rgba(78, 205, 196, 0.8);
+    }
+    80% {
+        color: #C77DFF;
+        text-shadow: 0 0 10px rgba(199, 125, 255, 0.8);
+    }
+    100% {
+        color: #FF6B6B;
+        text-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+    }
+}
+
+/* Zoom animation for direction button */
+@keyframes animation-zoom-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+/* Apply color animation to direction text */
+[data-node-id="oubOrReWeS"] div[contenteditable="false"],
+[data-node-id="8A6z2O4ZXB"] div[contenteditable="false"] {
+    animation: animation-color-pulse 3s ease-in-out infinite !important;
+}
+
+/* Apply zoom animation to direction button container */
+[data-node-id="oubOrReWeS"],
+[data-node-id="8A6z2O4ZXB"] {
+    animation: animation-zoom-pulse 2s ease-in-out infinite !important;
+    transition: transform 0.3s ease;
+}
+
+/* Add hover effect */
+[data-node-id="oubOrReWeS"]:hover,
+[data-node-id="8A6z2O4ZXB"]:hover {
+    transform: scale(1.2) !important;
+    cursor: pointer;
+}
+
+/* QR Icon Zoom Animation */
+@keyframes qr-icon-zoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.qr-icon-zoom {
+    animation: qr-icon-zoom 2s ease-in-out infinite;
 }
