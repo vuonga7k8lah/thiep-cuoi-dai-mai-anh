@@ -8544,23 +8544,23 @@ a, button, [role="button"], .cursor-pointer {
 }
 
 [data-node-id="wyW4plrQy9"][style*="top: 2952.82px"] {
-    top: 4600px !important;
+    top: 4386px !important;
 }
 
 [data-node-id="PMrottrG3R"][style*="top: 2999.91px"] {
-    top: 4647px !important;
+    top: 4419px !important;
 }
 
 [data-node-id="ISIUPg2woZ"][style*="top: 3035.86px"] {
-    top: 4673px !important;
+    top: 4451px !important;
 }
 
 [data-node-id="IZgw7JIB0d"][style*="top: 3086.74px"] {
-    top: 4758px !important;
+    top: 4548px !important;
 }
 
 [data-node-id="5EGz2EhA_a"][style*="top: 3165.6px"] {
-    top: 4813px !important;
+    top: 4649px !important;
 }
 
 /* Yes I Do section */
@@ -8792,7 +8792,7 @@ a, button, [role="button"], .cursor-pointer {
 /* Recalculate children positions: actual_top - wrapper_offset */
 
 .gift-section [data-node-id="EsRWJCC0XR"] {
-    top: 2218px !important; /* 7720.94 - 5340 */
+    top: 2185px !important; /* 7720.94 - 5340 */
 }
 
 .gift-section [data-node-id="poJwImDDnk"] {
@@ -8990,11 +8990,11 @@ a, button, [role="button"], .cursor-pointer {
         min-height: 250px !important;
     }
     
-    .photo-gallery-wrapper img {
+    /* .photo-gallery-wrapper img {
         object-fit: contain !important;
         image-rendering: auto !important;
         image-rendering: -webkit-optimize-contrast !important;
-    }
+    } */
 }
 
 /* High quality album images */

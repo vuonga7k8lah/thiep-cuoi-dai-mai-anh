@@ -54,65 +54,34 @@ gtag('config', 'G-24WP7GNL8X');
 // DYNAMIC DATA LOADING - Based on URL parameter
 // ==========================================
 
-// ⚠️ ALBUM IMAGES - Thay đổi mảng này để cập nhật ảnh trong Album
+// ⚠️ ALBUM IMAGES - Ảnh được load TỰ ĐỘNG từ file image/album/images.json
 // 
-// HƯỚNG DẪN SỬ DỤNG GOOGLE DRIVE:
-// 1. Upload ảnh lên Google Drive
-// 2. Click chuột phải -> Share -> Anyone with the link -> Copy link
-// 3. Link phải có dạng: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-//    (KHÔNG dùng link drive-viewer vì nó không hoạt động!)
+// HƯỚNG DẪN:
+// 1. Bỏ ảnh vào thư mục image/album/
+// 2. Chạy lệnh để tạo lại manifest:
+//    cd <thư mục project> && ls image/album/ | grep -iE '\.(jpg|jpeg|png|webp)$' | sort | python3 -c "import sys,json; files=['image/album/'+l.strip() for l in sys.stdin]; print(json.dumps(files, indent=2))" > image/album/images.json
+// 3. Ảnh sẽ tự hiện trên trang mà không cần sửa code JS
 //
-// Hoặc dùng URL ảnh trực tiếp từ: Cloudinary, Imgur, hoặc server của bạn
-//
-const ALBUM_IMAGES = [
-    // Ảnh từ thư mục image/album
-    'image/album/PMN01376.JPG',
-    'image/album/PMN01542.JPG',
-    'image/album/PMN01559.JPG',
-    'image/album/PMN01774.JPG',
-    'image/album/PMN02008.JPG',
-    'image/album/PMN02027.JPG',
-    'image/album/PMN02091.JPG',
-    'image/album/PMN02367.JPG',
-    'image/album/PMN02572.JPG',
-    'image/album/PMN02580.JPG',
-    'image/album/PMN02685.JPG',
-    'image/album/PMN02855.JPG',
-];
+let ALBUM_IMAGES = [];
 
-// Helper function: Convert Google Drive sharing link to direct image URL
-function convertToDirectUrl(url) {
-    // Pattern 1: Standard sharing link
-    // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-    let driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/\?]+)/);
-    if (driveMatch && driveMatch[1]) {
-        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+// Load danh sách ảnh từ manifest JSON
+async function loadAlbumImages() {
+    try {
+        const response = await fetch('image/album/images.json');
+        if (!response.ok) throw new Error('Manifest not found');
+        const images = await response.json();
+        ALBUM_IMAGES = images;
+        console.log('Loaded', ALBUM_IMAGES.length, 'album images from manifest');
+        return ALBUM_IMAGES;
+    } catch (error) {
+        console.error('Error loading album manifest:', error);
+        return [];
     }
-    
-    // Pattern 2: Open link
-    // https://drive.google.com/open?id=FILE_ID
-    driveMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
-    if (driveMatch && driveMatch[1]) {
-        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
-    }
-    
-    // Pattern 3: Thumbnail link (already direct)
-    if (url.includes('drive.google.com/thumbnail')) {
-        return url;
-    }
-    
-    // Pattern 4: uc?export link (already direct)
-    if (url.includes('drive.google.com/uc')) {
-        return url;
-    }
-    
-    // Return original URL for non-Google Drive links
-    return url;
 }
 
-// Get processed album URLs
+// Get processed album URLs (chỉ filter, không cần convert vì dùng local path)
 function getAlbumUrls() {
-    return ALBUM_IMAGES.filter(url => url && !url.includes('drive-viewer')).map(convertToDirectUrl);
+    return ALBUM_IMAGES.filter(url => url && url.trim() !== '');
 }
 
 let weddingData = null;
@@ -591,9 +560,11 @@ function initPhotoSwipe() {
 }
 
 // Try to initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     console.log('DOM Content Loaded');
-    // Initialize album gallery from local images
+    // Load album images from manifest first
+    await loadAlbumImages();
+    // Initialize album gallery from loaded images
     setTimeout(initAlbumGallery, 500);
     // Wait for dynamic content to load
     setTimeout(initPhotoSwipe, 2000);
