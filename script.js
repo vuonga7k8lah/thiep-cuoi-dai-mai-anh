@@ -2308,3 +2308,104 @@ async function initGiftSection() {
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initGiftSection, 1500);
 });
+
+// ==========================================
+// FALLING HỶ (囍) EFFECT - Snowfall style
+// ==========================================
+// 🔧 ĐIỀU CHỈNH TỐC ĐỘ RƠI TẠI ĐÂY (1 = rất chậm, 10 = rất nhanh)
+const HY_FALL_SPEED = 7;
+
+// Các ký tự Hỷ sử dụng
+const HY_CHARS = ['囍', '喜', '❤', '♥'];
+
+// Số lượng ký tự tối đa trên màn hình cùng lúc
+const HY_MAX_COUNT = 20;
+
+// Khoảng cách giữa các lần sinh ký tự (ms) - tính từ speed
+function getSpawnInterval() {
+    // Speed 1 = 3000ms, Speed 10 = 400ms
+    return Math.max(400, 3400 - (HY_FALL_SPEED * 300));
+}
+
+// Thời gian rơi (ms) - tính từ speed
+function getFallDuration() {
+    // Speed 1 = 14s, Speed 10 = 4s
+    return Math.max(4, 15 - (HY_FALL_SPEED * 1.1));
+}
+
+let hyContainer = null;
+let hyInterval = null;
+let hyCount = 0;
+
+function initHyFallingEffect() {
+    // Tạo container
+    hyContainer = document.createElement('div');
+    hyContainer.className = 'hy-falling-container';
+    document.body.appendChild(hyContainer);
+
+    // Bắt đầu tạo ký tự rơi
+    hyInterval = setInterval(spawnHyChar, getSpawnInterval());
+
+    // Tạo vài ký tự ban đầu cho có ngay hiệu ứng
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => spawnHyChar(), i * 600);
+    }
+
+    console.log('Falling Hỷ effect initialized! Speed:', HY_FALL_SPEED);
+}
+
+function spawnHyChar() {
+    if (!hyContainer) return;
+    if (hyCount >= HY_MAX_COUNT) return;
+
+    hyCount++;
+    const el = document.createElement('span');
+    el.className = 'hy-char';
+
+    // Random ký tự
+    const charIndex = Math.floor(Math.random() * HY_CHARS.length);
+    el.textContent = HY_CHARS[charIndex];
+
+    // Random vị trí ngang
+    const leftPos = Math.random() * 95;
+    el.style.left = leftPos + '%';
+
+    // Random kích thước (16px - 32px)
+    const size = 16 + Math.random() * 16;
+    el.style.fontSize = size + 'px';
+
+    // Random delay nhẹ
+    const delay = Math.random() * 2;
+    el.style.animationDelay = delay + 's';
+
+    // Tốc độ rơi dựa trên biến HY_FALL_SPEED
+    const duration = getFallDuration() + (Math.random() * 3 - 1.5);
+    el.style.setProperty('--hy-fall-duration', duration + 's');
+
+    // Random style màu (1-4)
+    const styleNum = Math.floor(Math.random() * 4) + 1;
+    el.classList.add('hy-style-' + styleNum);
+
+    // Random kiểu lắc (1-3, hoặc không lắc)
+    const swayNum = Math.floor(Math.random() * 4);
+    if (swayNum > 0) {
+        el.classList.add('hy-sway-' + swayNum);
+    }
+
+    hyContainer.appendChild(el);
+
+    // Xóa element sau khi animation kết thúc
+    const totalTime = (duration + delay) * 1000 + 500;
+    setTimeout(() => {
+        if (el.parentNode) {
+            el.parentNode.removeChild(el);
+        }
+        hyCount--;
+    }, totalTime);
+}
+
+// Khởi tạo hiệu ứng sau khi trang tải xong
+document.addEventListener('DOMContentLoaded', function() {
+    // Chờ 2s sau khi mở thiệp mới bắt đầu hiệu ứng
+    setTimeout(initHyFallingEffect, 2000);
+});
