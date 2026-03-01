@@ -485,6 +485,7 @@ function initPhotoSwipe() {
         document.body.appendChild(galleryContainer);
 
         // Initialize PhotoSwipe Lightbox on the container
+        // appendToEl: document.body → đảm bảo PhotoSwipe không bị ảnh hưởng bởi transform: scale()
         const lightbox = new PhotoSwipeLightbox({
             gallery: '#photoswipe-gallery',
             children: 'a',
@@ -499,24 +500,77 @@ function initPhotoSwipe() {
             arrowKeys: true,
             pinchToClose: true,
             clickToCloseNonZoomable: false,
+            // Zoom vào giữa màn hình khi click
             imageClickAction: 'zoom',
-            tapAction: 'toggle-controls',
+            tapAction: 'zoom',
+            doubleTapAction: 'zoom',
+            // Ảnh ban đầu fit vừa màn hình
+            initialZoomLevel: 'fit',
+            // Khi zoom: phóng 2x và căn giữa
+            secondaryZoomLevel: 2,
             maxZoomLevel: 4,
-            preload: [1, 2]
-        });
-        
-        // Load actual image dimensions dynamically
-        lightbox.on('itemData', (e) => {
-            const img = new Image();
-            img.src = e.itemData.src;
-            img.onload = function() {
-                e.itemData.width = this.naturalWidth || 2000;
-                e.itemData.height = this.naturalHeight || 1500;
-            };
+            preload: [1, 2],
+            appendToEl: document.body
         });
         
         lightbox.init();
         console.log('PhotoSwipe initialized successfully!');
+        
+        // Fix ảnh biến mất khi zoom trên mobile + zoom luôn căn giữa:
+        let savedInlineTransform = '';
+        let savedInlineWidth = '';
+        let savedInlineOrigin = '';
+        
+        lightbox.on('beforeOpen', () => {
+            document.body.classList.add('photoswipe-active');
+            
+            // Override toggleZoom: luôn zoom vào tâm viewport thay vì tap point
+            const pswp = lightbox.pswp;
+            pswp.toggleZoom = function() {
+                const slide = pswp.currSlide;
+                if (!slide) return;
+                const center = {
+                    x: pswp.viewportSize.x / 2,
+                    y: pswp.viewportSize.y / 2
+                };
+                const isZoomedIn = slide.currZoomLevel > slide.zoomLevels.initial + 0.01;
+                if (!isZoomedIn) {
+                    pswp.zoomTo(slide.zoomLevels.secondary, center, 333);
+                } else {
+                    pswp.zoomTo(slide.zoomLevels.initial, center, 333);
+                }
+            };
+            
+            // Xóa inline transform đã được applyScale() set
+            const innerWrapper = document.querySelector('.w-full.h-full');
+            if (innerWrapper) {
+                savedInlineTransform = innerWrapper.style.transform || '';
+                savedInlineWidth = innerWrapper.style.width || '';
+                savedInlineOrigin = innerWrapper.style.transformOrigin || '';
+                innerWrapper.style.transform = 'none';
+                innerWrapper.style.transformOrigin = '';
+            }
+            
+            const rootContainer = document.getElementById('root-page-container');
+            if (rootContainer) {
+                rootContainer.style.transform = 'none';
+            }
+        });
+        
+        lightbox.on('destroy', () => {
+            document.body.classList.remove('photoswipe-active');
+            
+            const innerWrapper = document.querySelector('.w-full.h-full');
+            if (innerWrapper) {
+                innerWrapper.style.transform = savedInlineTransform;
+                innerWrapper.style.width = savedInlineWidth;
+                innerWrapper.style.transformOrigin = savedInlineOrigin;
+            }
+            
+            if (typeof initMobileResponsive === 'function') {
+                initMobileResponsive();
+            }
+        });
         
         // Store lightbox globally for access
         window.photoSwipeLightbox = lightbox;
@@ -816,6 +870,10 @@ function initMobileResponsive() {
     const originalWidth = 500; // Original design width
     
     function applyScale() {
+        // Không áp dụng transform khi PhotoSwipe đang mở
+        // vì transform tạo stacking context → ảnh biến mất khi zoom
+        if (document.body.classList.contains('photoswipe-active')) return;
+        
         const viewportWidth = window.innerWidth;
         
         // Only apply on mobile (< 520px)

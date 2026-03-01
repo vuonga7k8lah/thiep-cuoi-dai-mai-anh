@@ -7909,6 +7909,14 @@ html, body {
     }
 }
 
+/* TẮT TRANSFORM KHI PHOTOSWIPE ĐANG MỞ */
+/* Đây là fix cho bug ảnh biến mất khi zoom trên mobile.
+   transform: scale() tạo stacking context mới → position: fixed bị sai */
+body.photoswipe-active #root-page-container,
+body.photoswipe-active .w-full.h-full {
+    transform: none !important;
+}
+
 /* Very small screens (iPhone SE, older devices) */
 @media screen and (max-width: 375px) {
     #root-page-container {
@@ -8076,10 +8084,18 @@ a, button, [role="button"], .cursor-pointer {
 }
 
 /* PhotoSwipe overlay fix for scaled container */
+/* QUAN TRỌNG: transform: scale() trên container tạo stacking context mới,
+   khiến position: fixed bị tính relative tới container → ảnh biến mất.
+   Fix: ghi đè position và transform để thoát khỏi stacking context */
 .pswp {
     z-index: 100000 !important;
     position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
     transform: none !important;
+    contain: layout !important;
 }
 
 /* Make sure PhotoSwipe is above everything */
@@ -8091,6 +8107,15 @@ a, button, [role="button"], .cursor-pointer {
     max-width: 100vw !important;
     max-height: 100vh !important;
     object-fit: contain;
+}
+
+/* PhotoSwipe container - đảm bảo không bị ảnh hưởng bởi parent transform */
+.pswp__container {
+    transform-origin: center center !important;
+}
+
+.pswp__zoom-wrap {
+    transform-origin: center center !important;
 }
 
 /* PhotoSwipe touch controls for mobile */
