@@ -64,6 +64,28 @@ gtag('config', 'G-24WP7GNL8X');
 //
 let ALBUM_IMAGES = [];
 
+// ==========================================
+// TỐI ƯU ẢNH - Chuyển đường dẫn sang WebP đã nén
+// ==========================================
+// Chuyển đường dẫn ảnh gốc sang phiên bản tối ưu WebP
+// tier: 'thumb' (200px), 'medium' (800px), 'full' (1600px)
+function getOptimizedUrl(originalPath, tier) {
+    if (!originalPath) return originalPath;
+    // Bỏ leading slash nếu có
+    let cleanPath = originalPath.replace(/^\//, '');
+    // Lấy tên file không có extension
+    let filename = cleanPath.split('/').pop();
+    let nameWithoutExt = filename.replace(/\.[^.]+$/, '');
+    return 'image/optimized/' + tier + '/' + nameWithoutExt + '.webp';
+}
+
+// Chuyển tất cả URL album sang phiên bản tối ưu
+function getAlbumOptimizedUrls(tier) {
+    return ALBUM_IMAGES
+        .filter(url => url && url.trim() !== '')
+        .map(url => getOptimizedUrl(url, tier));
+}
+
 // Load danh sách ảnh từ manifest JSON
 async function loadAlbumImages() {
     try {
@@ -79,9 +101,9 @@ async function loadAlbumImages() {
     }
 }
 
-// Get processed album URLs (chỉ filter, không cần convert vì dùng local path)
+// Get processed album URLs (dùng medium cho hiển thị chính)
 function getAlbumUrls() {
-    return ALBUM_IMAGES.filter(url => url && url.trim() !== '');
+    return getAlbumOptimizedUrls('medium');
 }
 
 let weddingData = null;
@@ -373,8 +395,9 @@ function initPhotoSwipe() {
     // PRIORITY 1: Use ALBUM_IMAGES config if defined and has images
     if (typeof ALBUM_IMAGES !== 'undefined' && ALBUM_IMAGES.length > 0) {
         console.log('Using ALBUM_IMAGES config with', ALBUM_IMAGES.length, 'images');
-        const processedUrls = getAlbumUrls();
-        processedUrls.forEach(function(url, index) {
+        // Dùng ảnh full quality cho PhotoSwipe lightbox (đã nén WebP ~250KB thay vì ~14MB)
+        const fullUrls = getAlbumOptimizedUrls('full');
+        fullUrls.forEach(function(url, index) {
             galleryImages.push({
                 src: url,
                 width: 2000,
@@ -559,9 +582,65 @@ function initPhotoSwipe() {
     }
 }
 
+// ==========================================
+// LAZY LOADING BACKGROUND IMAGES
+// ==========================================
+function initLazyBackgrounds() {
+    // Tìm tất cả elements có background-image dùng ảnh local
+    const allElements = document.querySelectorAll('[style*="background-image"]');
+    
+    allElements.forEach(function(el) {
+        const style = el.getAttribute('style') || '';
+        // Chỉ xử lý ảnh local (image/...)
+        const match = style.match(/background-image:\s*url\(['"]?(\/?\.?\/?(image\/[^'"\)]+))['"]?\)/);
+        if (!match) return;
+        
+        const originalPath = match[1];
+        const relativePath = match[2];
+        
+        // Chuyển sang ảnh medium WebP
+        const optimizedUrl = getOptimizedUrl(relativePath, 'medium');
+        
+        // Thay thế URL trong style
+        const newStyle = style.replace(
+            /background-image:\s*url\(['"]?[^'"\)]+['"]?\)/,
+            'background-image: url(\'' + optimizedUrl + '\')'
+        );
+        el.setAttribute('style', newStyle);
+    });
+    
+    // Cũng tối ưu ảnh trong thẻ <img> có src là ảnh local
+    const allImgs = document.querySelectorAll('img[src*="image/"]');
+    allImgs.forEach(function(img) {
+        const src = img.getAttribute('src') || '';
+        if (src.includes('image/') && !src.includes('optimized')) {
+            // Ảnh letter trong phong bì dùng medium
+            const optimizedUrl = getOptimizedUrl(src, 'medium');
+            img.setAttribute('src', optimizedUrl);
+        }
+    });
+    
+    console.log('Lazy backgrounds: đã tối ưu', allElements.length, 'background-images và', allImgs.length, 'img tags');
+}
+
+// ==========================================  
+// PRELOADER - Ẩn preloader khi trang sẵn sàng
+// ==========================================
+function hidePreloader() {
+    const preloader = document.getElementById('page-preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(function() {
+            preloader.style.display = 'none';
+        }, 500);
+    }
+}
+
 // Try to initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', async function () {
     console.log('DOM Content Loaded');
+    // Tối ưu ảnh background ngay lập tức
+    initLazyBackgrounds();
     // Load album images from manifest first
     await loadAlbumImages();
     // Initialize album gallery from loaded images
@@ -570,6 +649,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     setTimeout(initPhotoSwipe, 2000);
     // Initialize mobile responsive scaling
     initMobileResponsive();
+    // Ẩn preloader sau khi init xong
+    setTimeout(hidePreloader, 800);
 });
 
 // ==========================================
@@ -647,11 +728,13 @@ function initAlbumGallery() {
             
             const img = document.createElement('img');
             img.alt = 'Photo ' + (index + 1);
-            img.loading = 'eager';
-            img.decoding = 'sync';
+            img.loading = 'lazy';
+            img.decoding = 'async';
             img.className = 'object-cover';
-            img.src = url;
-            img.style.cssText = 'position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; object-fit: cover;';
+            // Thumbnail dùng ảnh thumb (~10KB thay vì ~14MB)
+            const thumbUrls = getAlbumOptimizedUrls('thumb');
+            img.src = thumbUrls[index] || url;
+            img.style.cssText = 'position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent; object-fit: cover;';
             
             button.appendChild(img);
             
