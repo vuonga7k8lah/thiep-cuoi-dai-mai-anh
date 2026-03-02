@@ -232,8 +232,8 @@ loadWeddingData();
 // 5. Gửi link cho khách: yoursite.com/?guest=1 (1 là ID trong Sheet)
 
 // ⚠️ THAY ĐỔI SHEET_ID NÀY BẰNG ID GOOGLE SHEET CỦA BẠN
-const GOOGLE_SHEET_ID = '1TM2IW82oSgv9g1v4cv8WLGLBRhSbMrZ2ab8sflhwllk';
-const GOOGLE_SHEET_NAME = 'Danh Sách Khách Mai Anh'; // Tên sheet (mặc định là Sheet1)
+const GOOGLE_SHEET_ID = '1mw2dHFpSfGhqHAgpQC73Re1eBV0tgc0dhtp6ht1x0DQ';
+const GOOGLE_SHEET_NAME = 'Danh Sách Khách'; // Tên sheet (mặc định là Sheet1)
 
 let guestName = null;
 
@@ -281,7 +281,7 @@ async function loadGuestFromGoogleSheets() {
             const row = rows[i];
             if (!row.c || !row.c[0] || row.c[0].v === null || row.c[0].v === undefined) continue;
             
-            // Lấy ID từ cell và xử lý cả số lẫn chuỗi
+            // Lấy ID từ cột A (index 0)
             const cellValue = row.c[0].v;
             const rowId = String(cellValue).trim();
             const searchId = String(guestId).trim();
@@ -290,8 +290,8 @@ async function loadGuestFromGoogleSheets() {
             
             // So sánh flexible: cả string và number
             if (rowId === searchId || cellValue == guestId) {
-                // Lấy tên từ cột B (index 1)
-                guestName = row.c[1] ? row.c[1].v : null;
+                // Lấy tên từ cột C (index 2)
+                guestName = row.c[2] ? row.c[2].v : null;
                 console.log('Found guest:', guestName, 'at row', i);
                 
                 // Cập nhật giao diện
@@ -309,46 +309,25 @@ async function loadGuestFromGoogleSheets() {
     }
 }
 
-// Cập nhật hiển thị tên khách mời trên ảnh letter trong phong bì
+// Cập nhật hiển thị tên khách mời trên ảnh letter trong phong bì + div kính mời
 function updateGuestNameDisplay(name) {
     if (!name) return;
     
-    // Tìm phần letter trong phong bì
-    const letterElement = document.querySelector('.letter');
+   
     
-    if (letterElement) {
-        // Đảm bảo letter có position relative để overlay hoạt động
-        letterElement.style.position = 'relative';
-        
-        // Kiểm tra xem đã có overlay chưa
-        let guestOverlay = letterElement.querySelector('.guest-name-overlay');
-        
-        if (!guestOverlay) {
-            // Tạo overlay cho tên khách mời
-            guestOverlay = document.createElement('div');
-            guestOverlay.className = 'guest-name-overlay';
-            guestOverlay.style.cssText = `
-                position: absolute;
-                bottom: 13%;
-                left: 40%;
-                transform: translateX(-50%);
-                color: rgb(58, 74, 58);
-                font-size: 18px;
-                font-family: "Dancing Script", "Great Vibes", cursive;
-                font-weight: 500;
-                text-align: center;
-                white-space: nowrap;
-                pointer-events: none;
-                z-index: 10;
+    // 2. Cập nhật tên trong div "Kính mời" (invitation-greeting)
+    const greetingDiv = document.getElementById('invitation-greeting');
+    if (greetingDiv) {
+        const textDiv = greetingDiv.querySelector('div > div');
+        if (textDiv) {
+            textDiv.innerHTML = ` 
+            <div style="height: auto; width: 100%; min-width: 20px; color: rgb(139, 47, 48); font-size: 22px; text-shadow: rgba(0, 0, 0, 0) 0px 0px 2px; font-weight: 500; font-family: 'Quicksand', sans-serif; text-align: center; line-height: 1.6; letter-spacing: 1px;">
+                            Kính mời:<br> <strong style="font-family: 'Playfair Display', serif; font-size: 26px;">${name}
+                            </strong>
+                        </div>
             `;
-            letterElement.appendChild(guestOverlay);
+            console.log('Updated invitation greeting with guest name:', name);
         }
-        
-        // Cập nhật tên
-        guestOverlay.textContent = name;
-        console.log('Updated letter with guest name:', name);
-    } else {
-        console.log('Letter element not found');
     }
 }
 
@@ -494,21 +473,18 @@ function initPhotoSwipe() {
             bgOpacity: 0.95,
             spacing: 0.1,
             allowPanToNext: true,
-            zoom: true,
+            zoom: false,
             close: true,
             counter: true,
             arrowKeys: true,
             pinchToClose: true,
-            clickToCloseNonZoomable: false,
-            // Zoom vào giữa màn hình khi click
-            imageClickAction: 'zoom',
-            tapAction: 'zoom',
-            doubleTapAction: 'zoom',
-            // Ảnh ban đầu fit vừa màn hình
+            clickToCloseNonZoomable: true,
+            imageClickAction: 'close',
+            tapAction: 'toggle-controls',
+            doubleTapAction: false,
             initialZoomLevel: 'fit',
-            // Khi zoom: phóng 2x và căn giữa
-            secondaryZoomLevel: 2,
-            maxZoomLevel: 4,
+            secondaryZoomLevel: 1,
+            maxZoomLevel: 1,
             preload: [1, 2],
             appendToEl: document.body
         });
@@ -516,30 +492,13 @@ function initPhotoSwipe() {
         lightbox.init();
         console.log('PhotoSwipe initialized successfully!');
         
-        // Fix ảnh biến mất khi zoom trên mobile + zoom luôn căn giữa:
+        // Fix transform trên mobile:
         let savedInlineTransform = '';
         let savedInlineWidth = '';
         let savedInlineOrigin = '';
         
         lightbox.on('beforeOpen', () => {
             document.body.classList.add('photoswipe-active');
-            
-            // Override toggleZoom: luôn zoom vào tâm viewport thay vì tap point
-            const pswp = lightbox.pswp;
-            pswp.toggleZoom = function() {
-                const slide = pswp.currSlide;
-                if (!slide) return;
-                const center = {
-                    x: pswp.viewportSize.x / 2,
-                    y: pswp.viewportSize.y / 2
-                };
-                const isZoomedIn = slide.currZoomLevel > slide.zoomLevels.initial + 0.01;
-                if (!isZoomedIn) {
-                    pswp.zoomTo(slide.zoomLevels.secondary, center, 333);
-                } else {
-                    pswp.zoomTo(slide.zoomLevels.initial, center, 333);
-                }
-            };
             
             // Xóa inline transform đã được applyScale() set
             const innerWrapper = document.querySelector('.w-full.h-full');

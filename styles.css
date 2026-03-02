@@ -9041,8 +9041,9 @@ a, button, [role="button"], .cursor-pointer {
 @media screen and (max-width: 520px) {
     [data-node-id="bWTuaRnoUo"],
     [data-node-id="F3DYroHViD"] {
-        width: 61% !important;
-        left: 72.5% !important;
+        width: 60% !important;
+    
+        transform: translateX(0%) !important;
     }
 }
 
