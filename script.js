@@ -9,46 +9,46 @@ gtag('config', 'G-24WP7GNL8X');
 // ==========================================
 // SECURITY - Prevent viewing source code
 // ==========================================
-// (function() {
-//     // Disable right-click
-//     document.addEventListener('contextmenu', function(e) {
-//         e.preventDefault();
-//         return false;
-//     });
+(function() {
+    // Disable right-click
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
     
-//     // Disable keyboard shortcuts (F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C)
-//     document.addEventListener('keydown', function(e) {
-//         // F12
-//         if (e.keyCode === 123) {
-//             e.preventDefault();
-//             return false;
-//         }
-//         // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-//         if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-//             e.preventDefault();
-//             return false;
-//         }
-//         // Ctrl+U (View Source)
-//         if (e.ctrlKey && e.keyCode === 85) {
-//             e.preventDefault();
-//             return false;
-//         }
-//         // Ctrl+S (Save)
-//         if (e.ctrlKey && e.keyCode === 83) {
-//             e.preventDefault();
-//             return false;
-//         }
-//     });
+    // Disable keyboard shortcuts (F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C)
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.keyCode === 85) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+S (Save)
+        if (e.ctrlKey && e.keyCode === 83) {
+            e.preventDefault();
+            return false;
+        }
+    });
     
-//     // Console warning
-//     console.log('%c⚠️ CẢNH BÁO!', 'color: red; font-size: 40px; font-weight: bold;');
-//     console.log('%cĐây là tính năng dành cho developers. Nếu ai đó yêu cầu bạn paste mã vào đây, đó có thể là lừa đảo!', 'color: red; font-size: 16px;');
+    // Console warning
+    console.log('%c⚠️ CẢNH BÁO!', 'color: red; font-size: 40px; font-weight: bold;');
+    console.log('%cĐây là tính năng dành cho developers. Nếu ai đó yêu cầu bạn paste mã vào đây, đó có thể là lừa đảo!', 'color: red; font-size: 16px;');
     
-//    // Clear console periodically
-//     setInterval(function() {
-//         console.clear();
-//     }, 1000);
-// })();
+    // Clear console periodically
+    setInterval(function() {
+        console.clear();
+    }, 1000);
+})();
 
 // ==========================================
 // DYNAMIC DATA LOADING - Based on URL parameter

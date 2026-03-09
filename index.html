@@ -932,7 +932,7 @@
                     </div>
                 </div>
 
-                <div data-node-id="1NjyOJEzF8"
+                <div data-aos="fade-right" data-node-id="1NjyOJEzF8"
                     style="position: absolute; top: 2695.29px; left: 150.3px; width: 320.2px; height: 320.2px; z-index: 6; cursor: default; transform: rotate(0deg) scale(1, 1);"
                     class="jsx-1944329802">
                     <div data-transition-key="1NjyOJEzF8-slide-up-1.3-0.2-ease-out-false" data-node-id="1NjyOJEzF8"
@@ -1024,7 +1024,8 @@
                 </div>
 
 
-                <div data-node-id="8dGQgvj_tv"
+
+                <div data-aos="fade-down-left" data-node-id="8dGQgvj_tv"
                     style="position: absolute; top: 3484.73px; left: 192.285px; width: 292.2px; height: 385.704px; z-index: 21; cursor: default; transform: rotate(0deg) scale(1, 1);"
                     class="jsx-1944329802">
                     <div data-transition-key="8dGQgvj_tv-slide-up-1.3-0.2-ease-out-false" data-node-id="8dGQgvj_tv"
@@ -1040,6 +1041,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div data-node-id="qdnXaR5Qnu"
                     style="position: absolute; top: 3509.67px; left: 42.1px; width: 168.3px; height: 320.023px; z-index: 20; cursor: default; transform: rotate(0deg) scale(1, 1);"
                     class="jsx-3557960200">
@@ -1125,7 +1127,7 @@
                         </div>
                     </div>
                 </div>
-                <div data-node-id="pIGGOVGwNO"
+                <div data-aos="fade-left" data-node-id="pIGGOVGwNO"
                     style="position: absolute; top: 4286.56px; left: 37.985px; width: 306.096px; height: 404.047px; z-index: 31; cursor: default; transform: rotate(0deg) scale(1, 1);"
                     class="jsx-1944329802">
                     <div data-transition-key="pIGGOVGwNO-slide-up-1.3-0.2-ease-out-false" data-node-id="pIGGOVGwNO"
@@ -2183,7 +2185,7 @@
                     style="position: absolute; top: 7733px; left: 0; width: 100%; height: auto; z-index: 54;">
 
                     <!-- Thank you image -->
-                    <div data-node-id="Bj3xy15iG0" class="jsx-1944329802"
+                    <div data-aos="fade-down-left" data-node-id="Bj3xy15iG0" class="jsx-1944329802"
                         style="position: absolute; top: 3674px; left: 0.4px; width: 498px; height: 375px; z-index: 55; cursor: default; transform: rotate(0deg) scale(1, 1);"
                         tabindex="0">
                         <div data-transition-key="Bj3xy15iG0-fade-in-1.6-0-ease-out-false" data-node-id="Bj3xy15iG0"
@@ -2303,6 +2305,73 @@
             </svg>
         </button>
     </div>
+
+    <!-- Anti-inspect protection -->
+    <script>
+        // Chặn chuột phải
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        // Chặn các phím tắt mở DevTools
+        document.addEventListener('keydown', function (e) {
+            // F12
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I (Inspect)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+J (Console)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+C (Element picker)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+U (View source)
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+                e.preventDefault();
+                return false;
+            }
+            // Cmd+Option+I (Mac Inspect)
+            if (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+                e.preventDefault();
+                return false;
+            }
+            // Cmd+Option+J (Mac Console)
+            if (e.metaKey && e.altKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+                e.preventDefault();
+                return false;
+            }
+            // Cmd+Option+C (Mac Element picker)
+            if (e.metaKey && e.altKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) {
+                e.preventDefault();
+                return false;
+            }
+            // Cmd+Option+U (Mac View source)
+            if (e.metaKey && e.altKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Chặn kéo thả (drag)
+        document.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+        });
+
+        // Chặn chọn text
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+    </script>
 
     <!-- Custom JavaScript (ES Module) -->
     <script type="module" src="script.js"></script>
