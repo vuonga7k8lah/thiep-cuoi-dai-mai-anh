@@ -1,0 +1,9 @@
+# Headers for all pages - help Facebook/social media crawlers
+/*
+  X-Content-Type-Options: nosniff
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Headers for images - ensure og-image is cacheable and accessible
+/image/*
+  Cache-Control: public, max-age=31536000
+  Access-Control-Allow-Origin: *
