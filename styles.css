@@ -7869,15 +7869,24 @@ body {
     overflow: visible !important;
 }
 
+@media screen and (max-width: 575px) {
+    body {
+        height: calc(6700px * (100vw / 500px)) !important;
+    }
+}
+
+/* ── Tablet only: 576px – 1024px ── */
+@media screen and (min-width: 576px) and (max-width: 1024px) {
+    body {
+        height: 6700px !important; /* giữ nguyên, không scale phình to */
+    }
+}
+
 /* Mobile responsive - scale content to fit viewport width */
 /* Extended to 768px to cover Facebook in-app browser and tablets */
 @media screen and (max-width: 768px) {
     /* Create scaling wrapper effect */
-    body {
-        overflow-x: hidden;
-        overflow-y: auto;
-        height: auto;
-    }
+   
     
     #root-page-container {
         /* Scale factor: viewport width / design width (500px) */
@@ -7897,48 +7906,44 @@ body {
 }
 
 /* Scale down for screens smaller than design width */
+/* NOTE: JS applyScale() in script.js handles transform scaling.
+   CSS only sets container sizing and positioning. */
 @media screen and (max-width: 500px) {
     #root-page-container {
-        /* Scale factor: viewport width / design width (500px) */
-        --scale-factor: calc(100vw / 500px);
-        transform: scale(var(--scale-factor));
-        transform-origin: top center;
         /* Set explicit width to maintain layout */
         width: 500px !important;
         max-width: none !important;
-        /* Center the scaled container */
+        /* Position for JS scaling */
         position: relative !important;
-        left: 50% !important;
-        margin-left: -250px !important; /* Half of 500px */
+        left: 0 !important;
+        margin-left: 0 !important;
         margin-right: 0 !important;
-        /* Set margin-bottom to create proper scroll height */
-        margin-bottom: calc(-6314px + (6314px * (100vw / 500px))) !important;
     }
 }
 
+/* Very small screens (iPhone SE, older devices) */
+/* JS applyScale() handles scaling for all mobile widths */
+
 /* TẮT TRANSFORM KHI PHOTOSWIPE ĐANG MỞ */
-/* Đây là fix cho bug ảnh biến mất khi zoom trên mobile.
-   transform: scale() tạo stacking context mới → position: fixed bị sai */
+/* transform: scale() tạo stacking context mới → position: fixed bị sai */
 body.photoswipe-active #root-page-container,
 body.photoswipe-active .w-full.h-full {
     transform: none !important;
 }
 
-/* Very small screens (iPhone SE, older devices) */
-@media screen and (max-width: 375px) {
+/* Tablet/Desktop - no scaling, center at original 500px size */
+@media screen and (min-width: 521px) {
     #root-page-container {
-        --scale-factor: calc(100vw / 500px);
-        transform: scale(var(--scale-factor));
-        transform-origin: top left;
         width: 500px !important;
-    }
-}
-
-/* Desktop - centered container */
-@media screen and (min-width: 769px) {
-    #root-page-container {
         max-width: 500px !important;
         margin: 0 auto !important;
+        transform: none !important;
+    }
+    
+    #root-page-container > div > div.w-full {
+        transform: none !important;
+        width: 500px !important;
+        margin-left: 0 !important;
     }
 }
 
@@ -8927,6 +8932,8 @@ a, button, [role="button"], .cursor-pointer {
 
 /* ===========================================
    MOBILE RESPONSIVE - Full width centered
+   JS applyScale() handles the actual transform scaling.
+   CSS only sets container sizing and overflow.
    =========================================== */
 
 /* Main container full width on mobile */
@@ -8941,7 +8948,7 @@ a, button, [role="button"], .cursor-pointer {
     #root-page-container {
         width: 100vw !important;
         max-width: 100vw !important;
-        transform: none !important;
+        /* Do NOT set transform here — JS applyScale() handles it */
         left: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -8961,21 +8968,7 @@ a, button, [role="button"], .cursor-pointer {
         height: auto !important;
     }
     
-    /* Scale the innermost content wrapper */
-    #root-page-container > div > div.w-full {
-        transform: scale(calc(100vw / 500));
-        transform-origin: top center;
-        width: 500px;
-        margin-left: calc((100vw - 500px * (100vw / 500)) / 2);
-    }
-    
-    /* Limit container height to match scaled content (8350px * scale factor) */
-    #root-page-container,
-    #root-page-container > div {
-        /* Scale height: 8350px * (screenWidth / 500px) */
-        height: calc(6750px * (100vw / 500px)) !important;
-        overflow: hidden !important;
-    }
+    /* JS applyScale() sets transform on .w-full — do not override */
     
     /* All absolute positioned children scale properly */
     #root-page-container [style*="position: absolute"],

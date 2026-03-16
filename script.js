@@ -839,33 +839,40 @@ function initMobileResponsive() {
         if (viewportWidth < 520) {
             const scaleFactor = viewportWidth / originalWidth;
             
-            // Apply to container
-            container.style.width = '100vw';
-            container.style.maxWidth = '100vw';
-            container.style.transform = 'none';
-            container.style.left = '0';
-            
             // Find the innermost content wrapper
             const innerWrapper = container.querySelector('.w-full.h-full');
             if (innerWrapper) {
                 innerWrapper.style.transform = `scale(${scaleFactor})`;
                 innerWrapper.style.transformOrigin = 'top left';
                 innerWrapper.style.width = originalWidth + 'px';
+                
+                // Get the original height of content (from CSS or computed)
+                const originalHeight = innerWrapper.scrollHeight || innerWrapper.offsetHeight;
+                const scaledHeight = originalHeight * scaleFactor;
+                
+                // Set container heights to match scaled content
+                container.style.height = scaledHeight + 'px';
+                const directChild = container.querySelector(':scope > div');
+                if (directChild) {
+                    directChild.style.height = scaledHeight + 'px';
+                }
             }
             
             console.log('Mobile responsive applied, scale:', scaleFactor);
         } else {
-            // Reset on desktop
-            container.style.width = '';
-            container.style.maxWidth = '';
-            container.style.transform = '';
-            container.style.left = '';
+            // Reset on desktop/tablet
+            container.style.height = '';
             
             const innerWrapper = container.querySelector('.w-full.h-full');
             if (innerWrapper) {
                 innerWrapper.style.transform = '';
                 innerWrapper.style.transformOrigin = '';
                 innerWrapper.style.width = '';
+            }
+            
+            const directChild = container.querySelector(':scope > div');
+            if (directChild) {
+                directChild.style.height = '';
             }
         }
     }
