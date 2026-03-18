@@ -8340,41 +8340,8 @@ a, button, [role="button"], .cursor-pointer {
     }
 }
 
-/* Gift Button Rainbow Blinking Animation */
-#btn-gift {
-    animation: rainbowBlink 2s infinite;
-    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.5);
-}
-
-@keyframes rainbowBlink {
-    0% {
-        background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
-        box-shadow: 0 4px 20px rgba(255, 0, 0, 0.6);
-    }
-    20% {
-        background: linear-gradient(135deg, #ffcc00 0%, #ffdd44 100%);
-        box-shadow: 0 4px 20px rgba(255, 204, 0, 0.6);
-    }
-    40% {
-        background: linear-gradient(135deg, #00cc00 0%, #44dd44 100%);
-        box-shadow: 0 4px 20px rgba(0, 204, 0, 0.6);
-    }
-    60% {
-        background: linear-gradient(135deg, #0066ff 0%, #4488ff 100%);
-        box-shadow: 0 4px 20px rgba(0, 102, 255, 0.6);
-    }
-    80% {
-        background: linear-gradient(135deg, #9900ff 0%, #bb44ff 100%);
-        box-shadow: 0 4px 20px rgba(153, 0, 255, 0.6);
-    }
-    100% {
-        background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
-        box-shadow: 0 4px 20px rgba(255, 0, 0, 0.6);
-    }
-}
-
+/* Gift Button - same style as directions button */
 #btn-gift:hover {
-    animation-play-state: paused;
     transform: scale(1.15);
 }
 
