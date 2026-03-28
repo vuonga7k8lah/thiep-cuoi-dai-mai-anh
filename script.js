@@ -1505,8 +1505,8 @@ function initGiftCardQRPopup() {
             name: 'PHẠM THỊ HẠNH',
             bankId: 'SHB',
             bankName: 'SHB - Ngân hàng TMCP Sài Gòn - Hà Nội',
-            accountNo: '0965479256',
-            qrUrl: 'https://img.vietqr.io/image/SHB-0965479256-compact2.png?accountName=PHAM%20THI%20HANH&addInfo=Mung%20cuoi%20co%20dau'
+            accountNo: '0963479256',
+            qrUrl: 'https://img.vietqr.io/image/SHB-0963479256-compact2.png?accountName=PHAM%20THI%20HANH&addInfo=Mung%20cuoi%20co%20dau'
         },
         groom: {
             title: '🤵 Mừng Cưới Chú Rể 🤵',
